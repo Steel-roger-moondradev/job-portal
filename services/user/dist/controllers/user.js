@@ -103,3 +103,66 @@ export const updateResume = TryCatch(async (req, res, next) => {
         updateUser
     });
 });
+export const addSkill = TryCatch(async (req, res, next) => {
+    const user = req.user;
+    if (!user) {
+        throw new ErrorHandler("Authentication is required", 401);
+    }
+    const userId = user.user_id;
+    const { skillName } = req.body;
+    let wasSkillAdded = false;
+    try {
+        // to make our query a whole transaction
+        await sql `BEGIN`;
+        const [{ skill_id: skillId }] = await sql `
+        INSERT INTO skills(name)
+        VALUES (${skillName.trim()})
+        ON CONFLICT (name)
+        DO UPDATE SET name=EXCLUDED.name
+        RETURNING skill_id
+        `;
+        const insertionResult = await sql `
+        INSERT INTO users_skills(user_id,skill_id)
+        VALUES (${userId},${skillId})
+        ON CONFLICT(user_id,skill_id)
+        DO NOTHING 
+        RETURNING user_id
+        `;
+        if (insertionResult.length > 0) {
+            wasSkillAdded = true;
+        }
+        await sql `COMMIT`;
+    }
+    catch (error) {
+        await sql `ROLLBACK`;
+        throw error;
+    }
+    if (!wasSkillAdded) {
+        return res.status(200).json({
+            message: "User already have this skill"
+        });
+    }
+    res.status(200).json({
+        message: `${skillName.trim()} is added as a skill successfully`,
+    });
+});
+export const deleteSkill = TryCatch(async (req, res, next) => {
+    const user = req.user;
+    if (!user) {
+        throw new ErrorHandler("Authentication is required", 401);
+    }
+    const userId = user.user_id;
+    const { skillName } = req.body;
+    if (!skillName || skillName.trim() === "") {
+        throw new ErrorHandler("No skill provided to Delete", 400);
+    }
+    const result = await sql `DELETE FROM users_skills WHERE user_id=${userId} AND
+    skill_id=(SELECT skill_id FROM skills WHERE name=(${skillName.trim()}))
+    RETURNING user_id`;
+    if (result.length === 0) {
+        throw new ErrorHandler(`${skillName.trim()} as Skill not found`, 400);
+    }
+    res.json({
+        message: `${skillName.trim()} is deleted Successfully`,
+    });
+});
