@@ -49,9 +49,9 @@ async function initDB() {
         `;
         await sql `
         CREATE TABLE IF NOT EXISTS applications(
-        applications_id SERIAL PRIMARY KEY,
+        application_id SERIAL PRIMARY KEY,
         job_id INTEGER NOT NULL REFERENCES jobs(job_id) ON DELETE CASCADE,
-        application_id INTEGER NOT NULL,
+        applicant_id INTEGER NOT NULL,
         applicant_email VARCHAR(255) NOT NULL,
         status application_status NOT NULL DEFAULT 'submitted',
         resume VARCHAR(255) NOT NULL,

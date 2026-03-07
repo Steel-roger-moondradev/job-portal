@@ -184,3 +184,54 @@ export const deleteSkill=TryCatch(async(req:authenticatedRequest,res,next)=>{
     })
 
 })
+export const applyForJob=TryCatch(async(req:authenticatedRequest,res)=>{
+     const user=req.user;
+    if(!user){
+        throw new ErrorHandler("Authentication is required",401);
+    }
+    if(user.role!='jobseeker'){
+        throw new ErrorHandler("Forbidden request",401);
+    }
+    const{job_id,resume}=req.body;
+
+    if(!job_id||!resume){
+           throw new ErrorHandler("Data is insufficient",400);
+    }
+    const [job]=await sql`SELECT is_active FROM jobs WHERE job_id=${job_id}`;
+
+    if(!job||!job.is_active){
+        throw new ErrorHandler("Job does not exists",400);
+    }
+    
+    const time = Date.now();
+    const subTime=user.subscription?new Date(user.subscription).getTime():0;
+    const subscribed=subTime>time;
+    let jobApplied;
+    try{
+        [jobApplied]=await sql`
+    INSERT INTO applications (job_id,applicant_id,application_email,resume,subscribed)
+    VALUES(${job_id},${applicant_id},${user.email},${resume},${subscribed})
+    `;
+    }
+    catch(error:any){
+        if(error.code===23505){
+            throw new ErrorHandler("You have already registered",409);
+        }
+        throw error;
+    }
+
+    res.json({
+        message:"Applied for job",
+        jobApplied
+    })
+    
+})
+const getAllApllications=TryCatch(async(req:authenticatedRequest,res)=>{
+    const appliedJobs=await sql`
+    SELECT a.* j.title as job_title j.salary as job_salary j.location as job_location FROM applications JOIN jobs j ON j.job_id=a.job_id WHERE applicant_id=${req.user?.user_id}
+    `;
+    res.json({
+        appliedJobs
+    });
+
+})

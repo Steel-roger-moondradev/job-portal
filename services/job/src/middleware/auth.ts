@@ -26,7 +26,7 @@ export const isAuth =async(req:authenticatedRequest,res:Response,next:NextFuncti
         const authHeader=req.headers.authorization;
         if(!authHeader||!authHeader.startsWith("Bearer ")){
             res.status(401).json({
-                message:"Authorization header is messing or invalid"
+                message:"Authorization header is missing or invalid"
             })
             return;
         }
@@ -42,7 +42,6 @@ export const isAuth =async(req:authenticatedRequest,res:Response,next:NextFuncti
             })
             return;
         }
-        
         
         const users=await sql`
         SELECT u.user_id,u.name,u.email,u.phone_number,u.role,u.bio,u.resume,
