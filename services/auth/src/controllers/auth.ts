@@ -7,7 +7,7 @@ import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import { publishToProducer } from '../producer.js';
 import { forgotPasswordTemplate } from '../utils/forgotpassword.js';
-import { redisClient } from '../index.js';
+ import { redisClient } from '../index.js';
 
 export const registerUser=TryCatch(async(req,res)=>{
     const {name,email,password,phone_number,role,bio}=req.body;

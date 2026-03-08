@@ -192,14 +192,19 @@ export const applyForJob=TryCatch(async(req:authenticatedRequest,res)=>{
     if(user.role!='jobseeker'){
         throw new ErrorHandler("Forbidden request",401);
     }
-    const{job_id,resume}=req.body;
+    const{job_id}=req.body||{};
+    const resume=user.resume;
+    const applicant_id=user.user_id;
 
     if(!job_id||!resume){
+        console.log(job_id);
+        console.log(resume);
+        console.log(applicant_id);
            throw new ErrorHandler("Data is insufficient",400);
     }
-    const [job]=await sql`SELECT is_active FROM jobs WHERE job_id=${job_id}`;
+    const job=await sql`SELECT is_active FROM jobs WHERE job_id=${job_id}`;
 
-    if(!job||!job.is_active){
+    if(job.length===0||(job[0].is_active==false)){
         throw new ErrorHandler("Job does not exists",400);
     }
     
@@ -209,7 +214,7 @@ export const applyForJob=TryCatch(async(req:authenticatedRequest,res)=>{
     let jobApplied;
     try{
         [jobApplied]=await sql`
-    INSERT INTO applications (job_id,applicant_id,application_email,resume,subscribed)
+    INSERT INTO applications (job_id,applicant_id,applicant_email,resume,subscribed)
     VALUES(${job_id},${applicant_id},${user.email},${resume},${subscribed})
     `;
     }
@@ -226,9 +231,9 @@ export const applyForJob=TryCatch(async(req:authenticatedRequest,res)=>{
     })
     
 })
-const getAllApllications=TryCatch(async(req:authenticatedRequest,res)=>{
+export const getAllApllications=TryCatch(async(req:authenticatedRequest,res)=>{
     const appliedJobs=await sql`
-    SELECT a.* j.title as job_title j.salary as job_salary j.location as job_location FROM applications JOIN jobs j ON j.job_id=a.job_id WHERE applicant_id=${req.user?.user_id}
+    SELECT a.*, j.title as job_title, j.salary as job_salary,j.location as job_location FROM applications a JOIN jobs j ON j.job_id=a.job_id WHERE a.applicant_id=${req.user?.user_id}
     `;
     res.json({
         appliedJobs

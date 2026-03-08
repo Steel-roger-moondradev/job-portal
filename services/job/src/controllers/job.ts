@@ -1,10 +1,12 @@
-import { errorMonitor } from "events";
+
 import { authenticatedRequest } from "../middleware/auth.js";
 import getBuffer from "../utils/buffer.js";
 import sql from "../utils/db.js";
 import ErrorHandler from "../utils/ErrorHandler.js";
 import TryCatch from "../utils/TryCatch.js";
 import axios from 'axios'
+import { publishToProducer } from "../producer.js";
+import {applicationStatusUpdateTemplate} from "../utils/templateStatusupdation.js"
 
 type UploadResponse={
     url:string,
@@ -173,7 +175,7 @@ export const getAllCompanies=TryCatch(async(req:authenticatedRequest,res,next)=>
         throw new ErrorHandler("Authentication is required",401);
     }
      const Usersrole=await sql`
-    SELECT role FROM users WHERE user_id=${user.user_id}
+    SELECT role FROM users WHERE user_id=${user?.user_id}
     `;
     const userRole=Usersrole[0];
 
@@ -181,7 +183,7 @@ export const getAllCompanies=TryCatch(async(req:authenticatedRequest,res,next)=>
         throw new ErrorHandler("only recruiter is allowed",401);
     }
     const [company]=await sql `
-    SELECT * FROM companies WHERE recruiter_id=${user.user_id}
+    SELECT * FROM companies WHERE recruiter_id=${user?.user_id}
     `;
     res.json({
         message:"All companies Listed by you",
@@ -227,9 +229,88 @@ export const getAllActiveJobs =TryCatch(async(req,res)=>{
 })
 export const getSingleJob=TryCatch(async(req,res)=>{
     const [job]=await sql`
-    SELECT * FROM jobs j WHERE j.job_id=${req.params.jobId};
+    SELECT * FROM jobs j WHERE j.job_id=${req.params?.jobId};
     `;
     res.json({
         job
     })
 })
+
+export const getAllApplicationsForJob=TryCatch(async(req:authenticatedRequest,res)=>{
+     const user=req.user;
+    if(!user){
+        throw new ErrorHandler("Authentication is required",401);
+    }
+     const Usersrole=await sql`
+    SELECT role FROM users WHERE user_id=${user?.user_id}
+    `;
+    const userRole=Usersrole[0];
+
+    if(userRole.role=='jobseeker'){
+        throw new ErrorHandler("only recruiter is allowed",401);
+    }
+    const {jobId}=req.params;
+    if(!jobId){
+        throw new ErrorHandler("Invalid job to find",400);
+    }
+    const applications=await sql `
+    SELECT * FROM applications 
+    WHERE job_id=${jobId}
+    ORDER BY subscribed DESC,applied_at ASC
+    `;
+    res.json({
+        message:"All applications are",
+        applications
+    })
+})
+export const selectapplicants =TryCatch(async(req:authenticatedRequest,res)=>{
+    const user=req.user;
+    if(!user){
+        throw new ErrorHandler("Authentication is required",401);
+    }
+     const Usersrole=await sql`
+    SELECT role FROM users WHERE user_id=${user?.user_id}
+    `;
+    const userRole=Usersrole[0];
+
+    if(userRole.role=='jobseeker'){
+        throw new ErrorHandler("only recruiter is allowed",401);
+    }
+    const {id}=req.params;
+    const [application]=await sql`
+    SELECT job_id,applicant_email FROM applications
+    WHERE application_id=${id}
+    `;
+    if(!application){
+         throw new ErrorHandler("no applicant exists",400);
+    }
+    const [job]=await sql`SELECT posted_by_recruiter_id,title FROM jobs WHERE job_id=${application.job_id}`;
+    if(!job){
+        throw new ErrorHandler("no job exists",400);
+    }
+    if(job.posted_by_recruiter_id!=user.user_id){
+        throw new ErrorHandler("You are not allowed",401);
+    }
+    const [updatedApplicant]=await sql `UPDATE applications SET status=${req.body.status} WHERE application_id=${id} RETURNING *`;
+    if(!updatedApplicant){
+        throw new ErrorHandler("Error in status updating",400);
+    }
+    const message={
+        to:application.applicant_email,
+        subject:"STATUS-UPDATION",
+        html:applicationStatusUpdateTemplate(job.title)
+    }
+    publishToProducer(process.env.KAFKA_TOPIC as string,message).then(()=>{
+        console.log("Status updated")
+    }).catch((error:any)=>{
+        console.log("Error in message publishing by kafka")
+    });
+    
+    res.json({
+        message:"Status is updated",
+        job,
+        updatedApplicant
+    })
+})
+
+

@@ -5,13 +5,13 @@ import  { createClient } from 'redis'
 
 dotenv.config();
 
-export const redisClient=createClient({
-    url:process.env.REDIS_URL,
-})
+ export const redisClient=createClient({
+     url:process.env.REDIS_URL,
+ })
 
-redisClient.connect().then(()=>{console.log("redis is connected")}).catch((error:any)=>{
-console.log("Redis is not connected ",error);
-})
+ redisClient.connect().then(()=>{console.log("redis is connected")}).catch((error:any)=>{
+ console.log("Redis is not connected ",error);
+ })
 
 async function initdb(){
     try{
