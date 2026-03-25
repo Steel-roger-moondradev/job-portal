@@ -38,13 +38,21 @@ const CarrerGuide = () => {
     }
   }
   function resetdialog() {
-  setResponse(null);
-  setOpen(false);
-  setSkill([]);
-  setCurrentSkills("");
+    setOpen(false);
+    setSkill([]);
+    setCurrentSkills("");
   setResult(false);
+  setResponse(null);
 }
-  const getcarrerguide = async (): Promise<void> => {
+function handleOpen(){
+  if(response){
+            setResult(true);
+          }
+        else{
+          setOpen(true);
+        }
+}
+ const getcarrerguide = async (): Promise<void> => {
   if (skills.length === 0) {
     alert("Write atleast one skill");
     return;
@@ -53,16 +61,87 @@ const CarrerGuide = () => {
   setLoading(true);
 
   try {
-    const { data } = await axios.post(
-      "http://localhost:5001/api/utils/carrer",
-      { skills }
-    );
-    setResponse(data as CareerGuideResponse);
+    const data: CareerGuideResponse = {
+      summary:
+        "You have a solid foundation in modern web technologies, making you well-suited for roles in full-stack and frontend development.",
+
+      jobOptions: [
+        {
+          title: "Frontend Developer",
+          responsibilities:
+            "Build responsive user interfaces using React, manage state, integrate APIs, and optimize performance.",
+          why:
+            "Your React skills align perfectly with frontend architecture and UI development.",
+        },
+        {
+          title: "Full Stack Developer",
+          responsibilities:
+            "Develop both client and server-side applications using MERN stack, manage databases, and deploy applications.",
+          why:
+            "Your knowledge of both frontend and backend technologies makes you a strong candidate.",
+        },
+      ],
+
+      skillsToLearn: [
+        {
+          category: "Deepen Your Existing Stack Mastery",
+          skills: [
+            {
+              title: "Advanced React Patterns",
+              why:
+                "Improves scalability and maintainability of large applications.",
+              how:
+                "Learn hooks deeply, context API, and explore libraries like Zustand or Redux Toolkit.",
+            },
+            {
+              title: "TypeScript",
+              why:
+                "Enhances code reliability and reduces runtime errors.",
+              how:
+                "Refactor your current projects into TypeScript and practice typing complex objects.",
+            },
+          ],
+        },
+        {
+          category: "DevOps & Cloud",
+          skills: [
+            {
+              title: "Docker",
+              why:
+                "Helps in containerizing applications for consistent deployment.",
+              how:
+                "Dockerize your MERN project and run it locally using containers.",
+            },
+            {
+              title: "AWS Basics",
+              why:
+                "Essential for deploying scalable production applications.",
+              how:
+                "Learn EC2, S3, and deploy a full-stack app on AWS.",
+            },
+          ],
+        },
+      ],
+
+      learningApproach: {
+        title: "How to Approach Learning",
+        points: [
+          "Build real-world projects instead of just watching tutorials.",
+          "Focus on one concept deeply rather than switching frequently.",
+          "Revise and refactor old projects with improved practices.",
+          "Practice DSA alongside development for interviews.",
+          "Deploy every project to understand production workflows.",
+        ],
+      },
+    };
+
+    setResponse(data);
     setResult(true);
-    alert("Get carrer guidance");
+    alert("Dummy data loaded");
+
   } catch (error: any) {
     console.log(error);
-    alert(error?.response?.data?.message || "Something went wrong");
+    alert("Something went wrong");
   } finally {
     setLoading(false);
   }
@@ -70,10 +149,6 @@ const CarrerGuide = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-20">
-
-     
-      {!response ?(
-        <>
            {/* HEADER */}
       <div className="text-center mb-14">
         <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border bg-linear-to-r from-blue-50 to-indigo-50 shadow-md hover:shadow-lg transition hover:scale-105 dark:text-black">
@@ -94,7 +169,7 @@ const CarrerGuide = () => {
         </p>
 
         <Button
-          onClick={() => setOpen(true)}
+          onClick={handleOpen}
           className="group px-8 py-5 text-base bg-linear-to-r ml-125 from-indigo-500 to-purple-500 text-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all flex items-center gap-2"
         >
           <Sparkles className="group-hover:rotate-12 transition" />
@@ -102,7 +177,10 @@ const CarrerGuide = () => {
           <ArrowRight className="group-hover:translate-x-1 transition" />
         </Button>
       </div>
-
+     
+      {!response ?
+      (
+      <>
       {/* DIALOG */}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-md animate-in fade-in zoom-in-95 duration-300">
@@ -183,9 +261,16 @@ const CarrerGuide = () => {
 
         </DialogContent>
       </Dialog>
-        </>
-      ): <Dialog open={result} onOpenChange={setResult} >
+      </>
+      ):(
+        <>
+        <Dialog open={result} onOpenChange={setResult}>
   <DialogContent className="max-h-[90vh] flex flex-col max-w-6xl">
+    <DialogHeader>
+      <DialogTitle>
+        Your Ai Assistance
+      </DialogTitle>
+    </DialogHeader>
     {/* SCROLLABLE BODY */}
     <div className="flex-1 overflow-y-auto mt-6 space-y-10 pr-2">
       
@@ -222,7 +307,7 @@ const CarrerGuide = () => {
       {/* SKILLS */}
       <div>
         <h3 className="text-2xl font-bold mb-4 flex items-center gap-2">
-          <Pencil className="w-5 h-5 text-indigo-500" />
+          <Pencil className="w-6 h-6 text-indigo-500" />
           Skills to Learn
           </h3>
 
@@ -233,7 +318,7 @@ const CarrerGuide = () => {
             </h4>
 
               {category?.skills?.map((skill, j) => (
-                <div key={j} className="p-4 rounded-lg border bg-muted/30 hover:scale-[1.02] transition">
+                <div key={j} className="mt-4 p-4 rounded-lg border bg-muted/30 hover:scale-[1.02] transition">
                   <h5 className="font-medium">Skill:-{skill?.title}</h5>
                   <p className="text-sm mt-1 opacity-80">Why:-{skill?.why}</p>
                   <p className="text-sm mt-1 text-muted-foreground">
@@ -246,19 +331,22 @@ const CarrerGuide = () => {
       </div>
 
       {/* LEARNING APPROACH */}
-      <div className="p-6 rounded-xl border bg-linear-to-r from-blue-50 to-indigo-50 ">
-        <h3 className="text-2xl font-bold mb-4 flex items-center gap-2 dark:text-indigo">
-          <BookOpen className="w-5 h-5 text-indigo-500" />
-          Learning Approach:-{response?.learningApproach?.title}
-        </h3>
+      <h3 className="text-2xl font-bold mb-4  items-center gap-2 text-black dark:text-white">
+        <div className="flex items-center">
+        <BookOpen className="w-6 h-6 text-indigo-500" />
+          &nbsp;&nbsp;Learning Approach:- 
+        </div>
+    <div className="mt-3  text-indigo-500">{response?.learningApproach?.title}</div>
+  </h3>
+      <div className="p-6 rounded-xl border bg-linear-to-r from-blue-50 to-indigo-50">
+  
 
-        <ul className="list-disc ml-5 space-y-2">
-          {response?.learningApproach?.points?.map((point, i) => (
-            <li key={i} className="text-sm dark:text-black">{point}</li>
-          ))}
-        </ul>
-      </div>
-
+  <ul className="list-disc ml-5 space-y-2">
+    {response?.learningApproach?.points?.map((point, i) => (
+      <li key={i} className="text-sm dark:text-black">{point}</li>
+    ))}
+  </ul>
+</div>
     </div>
 
     {/* FIXED FOOTER */}
@@ -269,7 +357,9 @@ const CarrerGuide = () => {
     </DialogFooter>
 
   </DialogContent>
-</Dialog>}
+</Dialog>
+      </>
+      ) }
 
       {/* animation styles */}
       <style jsx>{`

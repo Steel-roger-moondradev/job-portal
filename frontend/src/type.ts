@@ -26,3 +26,27 @@ export interface CareerGuideResponse {
   skillsToLearn: SkillCategory[];
   learningApproach: LearningApproach;
 }
+export interface Dummy{
+  score:number;
+  feedback:string;
+}
+export interface scoreBreakdown{
+  formatting:Dummy;
+  keywords:Dummy;
+  structure:Dummy;
+  readability:Dummy;
+}
+
+export interface suggestions{
+  category:string;
+  issue:string;
+  recommendation:string;
+  priority:"high"|"medium"|"low";
+}
+export interface ResumeAnalysisResponse{
+  atsScore:number;
+  scoreBreakdown:scoreBreakdown;
+  suggestions:suggestions[];
+  strengths:string[];
+  summary:string;
+}
