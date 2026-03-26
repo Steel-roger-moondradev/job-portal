@@ -47,13 +47,21 @@ setFile(selectedFile);
 }
 };
 const convertToBase64 = (file: File): Promise<string> => {
-return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
 
-const reader = new FileReader();
-reader.readAsDataURL(file);
-reader.onload = () => resolve(reader.result as string);
-reader.onerror = (error) => reject(error);
-});
+    reader.readAsDataURL(file);
+
+    reader.onload = () => {
+      const result = reader.result as string;
+
+      const base64 = result.split(",")[1];
+
+      resolve(base64);
+    };
+
+    reader.onerror = (error) => reject(error);
+  });
 };
 const analyzeResume = async () => {
 if (!file) {
@@ -64,73 +72,79 @@ return;
 setLoading(true);
 try {
 const base64 = await convertToBase64(file);
-// const { data } = await axios.post(
-// `${utils_service}/api/utils/resume-analyzer`,
-// {
-// pdfbase64: base64,
+ const { data } = await axios.post(
+ `${utils_service}/api/utils/resume-analyzer`,
+ {
+ pdfbase64: base64,
+ }
+);
+// const data={
+//   "atsScore": 78,
+//   "scoreBreakdown": {
+//     "formatting": {
+//       "score": 82,
+//       "feedback": "Clean layout but minor issues with inconsistent spacing and use of bold text."
+//     },
+//     "keywords": {
+//       "score": 70,
+//       "feedback": "Relevant keywords present but missing several role-specific technical terms."
+//     },
+//     "structure": {
+//       "score": 80,
+//       "feedback": "Standard sections included, but ordering could be improved for better ATS parsing."
+//     },
+//     "readability": {
+//       "score": 85,
+//       "feedback": "Content is easy to read with clear bullet points and concise language."
+//     }
+//   },
+//   "suggestions": [
+//     {
+//       "category": "Keywords",
+//       "issue": "Missing job-specific keywords such as frameworks and tools relevant to the role.",
+//       "recommendation": "Analyze job descriptions and include matching technical keywords naturally in experience and skills sections.",
+//       "priority": "high"
+//     },
+//     {
+//       "category": "Formatting",
+//       "issue": "Use of inconsistent font sizes and bold styling.",
+//       "recommendation": "Maintain uniform font size and styling across all sections.",
+//       "priority": "medium"
+//     },
+//     {
+//       "category": "Structure",
+//       "issue": "Projects section is placed after skills, reducing visibility.",
+//       "recommendation": "Move projects section above skills to highlight practical experience.",
+//       "priority": "medium"
+//     },
+//     {
+//       "category": "Content",
+//       "issue": "Lack of quantified achievements.",
+//       "recommendation": "Add metrics such as percentages, numbers, or impact to demonstrate results.",
+//       "priority": "high"
+//     },
+//     {
+//       "category": "Formatting",
+//       "issue": "Use of special characters and symbols.",
+//       "recommendation": "Avoid non-standard symbols and use simple bullet points for better ATS parsing.",
+//       "priority": "low"
+//     }
+//   ],
+//   "strengths": [
+//     "Uses standard section headings like Education and Experience",
+//     "Bullet points improve readability",
+//     "Clear separation of sections",
+//     "Relevant technical skills included",
+//     "Consistent date formatting"
+//   ],
+//   "summary": "The resume is generally ATS-friendly with a clear structure and readable format. However, improving keyword optimization and adding measurable achievements will significantly increase its effectiveness."
 // }
-// );
-const data={
-  "atsScore": 78,
-  "scoreBreakdown": {
-    "formatting": {
-      "score": 82,
-      "feedback": "Clean layout but minor issues with inconsistent spacing and use of bold text."
-    },
-    "keywords": {
-      "score": 70,
-      "feedback": "Relevant keywords present but missing several role-specific technical terms."
-    },
-    "structure": {
-      "score": 80,
-      "feedback": "Standard sections included, but ordering could be improved for better ATS parsing."
-    },
-    "readability": {
-      "score": 85,
-      "feedback": "Content is easy to read with clear bullet points and concise language."
-    }
-  },
-  "suggestions": [
-    {
-      "category": "Keywords",
-      "issue": "Missing job-specific keywords such as frameworks and tools relevant to the role.",
-      "recommendation": "Analyze job descriptions and include matching technical keywords naturally in experience and skills sections.",
-      "priority": "high"
-    },
-    {
-      "category": "Formatting",
-      "issue": "Use of inconsistent font sizes and bold styling.",
-      "recommendation": "Maintain uniform font size and styling across all sections.",
-      "priority": "medium"
-    },
-    {
-      "category": "Structure",
-      "issue": "Projects section is placed after skills, reducing visibility.",
-      "recommendation": "Move projects section above skills to highlight practical experience.",
-      "priority": "medium"
-    },
-    {
-      "category": "Content",
-      "issue": "Lack of quantified achievements.",
-      "recommendation": "Add metrics such as percentages, numbers, or impact to demonstrate results.",
-      "priority": "high"
-    },
-    {
-      "category": "Formatting",
-      "issue": "Use of special characters and symbols.",
-      "recommendation": "Avoid non-standard symbols and use simple bullet points for better ATS parsing.",
-      "priority": "low"
-    }
-  ],
-  "strengths": [
-    "Uses standard section headings like Education and Experience",
-    "Bullet points improve readability",
-    "Clear separation of sections",
-    "Relevant technical skills included",
-    "Consistent date formatting"
-  ],
-  "summary": "The resume is generally ATS-friendly with a clear structure and readable format. However, improving keyword optimization and adding measurable achievements will significantly increase its effectiveness."
+if (!data) {
+  console.error("Invalid API response:", data);
+  alert("Invalid response from server");
+  return;
 }
+console.log("Raw API response:", JSON.stringify(data, null, 2));
 setResponse(data as ResumeAnalysisResponse);
 // toast.success("Resume analyzed successfully!");
 alert("Resume analyzed successfully!");
@@ -189,7 +203,7 @@ return (
 
   {/* Heading */}
   <h2 className="text-3xl md:text-5xl font-extrabold mb-4 leading-tight">
-    <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-blue-500 bg-clip-text text-transparent">
+    <span className="bg-linear-to-r from-indigo-500 via-purple-500 to-blue-500 bg-clip-text text-transparent">
       Optimize Your Resume for ATS
     </span>
   </h2>
@@ -202,7 +216,7 @@ return (
   </p>
 
   {/* Divider */}
-  <div className="h-px w-32 bg-gradient-to-r from-transparent via-indigo-400 to-transparent opacity-70" />
+  <div className="h-px w-32 bg-linear-to-r from-transparent via-indigo-400 to-transparent opacity-70" />
 
 </div>
 <Dialog open={open} onOpenChange={setOpen}>
@@ -210,14 +224,14 @@ return (
 <Button
   size="lg"
   className="group relative gap-2 h-12 px-8 rounded-xl font-semibold
-  bg-gradient-to-r from-indigo-500 via-purple-500 to-blue-500 text-white
+  bg-linear-to-r from-indigo-500 via-purple-500 to-blue-500 text-white
   shadow-md hover:shadow-xl
   hover:scale-[1.03] active:scale-[0.98]
   transition-all duration-300 overflow-hidden"
 >
 
   {/* Subtle glow effect */}
-  <span className="absolute inset-0 bg-gradient-to-r from-indigo-400 via-purple-400 to-blue-400 opacity-0 group-hover:opacity-20 transition duration-300 blur-xl" />
+  <span className="absolute inset-0 bg-linear-to-r from-indigo-400 via-purple-400 to-blue-400 opacity-0 group-hover:opacity-20 transition duration-300 blur-xl" />
 
   {/* Content */}
   <FileText size={18} className="relative z-10" />
@@ -243,7 +257,7 @@ return (
     </div>
 
     {/* Gradient title */}
-    <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-blue-500 bg-clip-text text-transparent">
+    <span className="bg-linear-to-r from-indigo-500 via-purple-500 to-blue-500 bg-clip-text text-transparent">
       Upload Your Resume
     </span>
   </DialogTitle>
@@ -256,7 +270,7 @@ return (
   </DialogDescription>
 
   {/* Divider */}
-  <div className="h-px w-full bg-gradient-to-r from-transparent via-indigo-400 to-transparent opacity-70" />
+  <div className="h-px w-full bg-linear-to-r from-transparent via-indigo-400 to-transparent opacity-70" />
 
 </DialogHeader>
 <div className="space-y-4 py-4">
@@ -265,7 +279,6 @@ onClick={() => fileInputRef.current?.click()}
 
 className="border-2 border-dashed rounded-lg p-12 text-center cursor-
 pointer hover:border-blue-500 transition-colors"
-
 >
 <div className="flex flex-col items-center gap-4">
 <div
@@ -365,7 +378,7 @@ Detailed Score Breakdown
 </h3>
 
 <div className="grid md:grid-cols-2 gap-3">
-{Object.entries(response.scoreBreakdown).map(
+{response.scoreBreakdown &&Object.entries(response.scoreBreakdown).map(
 ([key, value]) => (
 <div key={key} className="p-4 rounded-lg border">
 <div className="flex items-center justify-between mb-2">
@@ -396,7 +409,7 @@ border-green-200 dark:border-green-800"
 What Your Resume Does Well
 </h3>
 <ul className="space-y-2">
-{response.strengths.map((strength, index) => (
+{response.strengths?.map((strength, index) => (
 <li
 key={index}
 className="text-sm flex items-start gap-2"
@@ -414,7 +427,7 @@ className="text-sm flex items-start gap-2"
 Recommendations for Improvement
 </h3>
 <div className="space-y-3">
-{response.suggestions.map((suggestion, index) => (
+{response.suggestions?.map((suggestion, index) => (
 
 <div key={index} className="p-4 rounded-lg border">
 <div className="flex items-start justify-between gap-3 mb-2">

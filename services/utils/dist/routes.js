@@ -174,9 +174,7 @@ Focus on:
                 throw Error("Ai is not able to produce valid response");
             }
             jsonResponse = JSON.parse(rawtext);
-            res.json({
-                jsonResponse
-            });
+            res.json(jsonResponse);
         }
         catch (error) {
             return res.status(500).json({
