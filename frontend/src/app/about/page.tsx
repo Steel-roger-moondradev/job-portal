@@ -17,22 +17,22 @@ const About = () => {
           <div className="flex justify-center">
             <img
               src="/about.jpg"
-              alt="About HireHeaven"
-              className="w-full max-w-[500px] rounded-2xl shadow-xl transition-transform duration-500 hover:scale-105"
+              alt="About Job portal"
+              className="w-full max-w-125 rounded-2xl shadow-xl transition-transform duration-500 hover:scale-105"
             />
           </div>
 
           {/* Content */}
           <div className="space-y-6">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold">
-              Our Mission At Hire
+              Our Mission At Job
               <span className="bg-linear-to-r from-red-500 to-purple-500 bg-clip-text text-transparent">
-                Heaven
+                Portal
               </span>
             </h1>
 
             <p className="text-lg md:text-xl leading-relaxed opacity-80 max-w-3xl mx-auto">
-              At HireHaven, we're dedicated to revolutionizing the job search
+              At Job Portal, we're dedicated to revolutionizing the job search
               experience. Our mission is to create meaningful connections
               between talented individuals and forward-thinking companies,
               fostering growth and success for both.
@@ -50,7 +50,7 @@ const About = () => {
           </h2>
 
           <p className="text-lg md:text-xl opacity-70">
-            Join thousands of successful job seekers on HireHeaven
+            Join thousands of successful job seekers on Job portal
           </p>
 
           <div className="pt-4">
