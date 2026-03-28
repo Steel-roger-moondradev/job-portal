@@ -23,6 +23,7 @@ Zap,
 import axios from "axios";
 import { ResumeAnalysisResponse } from "@/type";
 import { utils_service } from "@/context/AppContext";
+import toast from "react-hot-toast";
 // import toast from "react-hot-toast";
 const ResumeAnalyzer = () => {
 const [open, setOpen] = useState(false);
@@ -141,7 +142,7 @@ const base64 = await convertToBase64(file);
 // }
 if (!data) {
   console.error("Invalid API response:", data);
-  alert("Invalid response from server");
+  toast.error("Invalid response from server");
   return;
 }
 console.log("Raw API response:", JSON.stringify(data, null, 2));

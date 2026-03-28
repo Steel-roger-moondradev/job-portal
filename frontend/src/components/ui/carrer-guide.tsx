@@ -10,6 +10,7 @@ import { Label } from './label';
 import { Input } from './input';
 import { CareerGuideResponse } from '@/type';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const CarrerGuide = () => {
   const [open, setOpen] = useState(false);
@@ -54,7 +55,7 @@ function handleOpen(){
 }
  const getcarrerguide = async (): Promise<void> => {
   if (skills.length === 0) {
-    alert("Write atleast one skill");
+    toast.error("Write atleast one skill");
     return;
   }
 
@@ -137,11 +138,11 @@ function handleOpen(){
 
     setResponse(data);
     setResult(true);
-    alert("Dummy data loaded");
+    toast.success("Dummy data loaded");
 
   } catch (error: any) {
     console.log(error);
-    alert("Something went wrong");
+    toast.error("Something went wrong");
   } finally {
     setLoading(false);
   }
