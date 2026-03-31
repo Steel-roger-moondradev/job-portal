@@ -57,7 +57,7 @@ export interface User{
     name:string,
     email:string,
     phone_number:string,
-    role_user:string,
+    role:string,
     bio:string|null,
     resume:string|null,
     profile_pic:string|null,
@@ -83,4 +83,8 @@ export interface LoginResponse{
   message:string,
   userObject:User,
   token:string,
+}
+export interface InfoProps{
+  user:User|null,
+  isAuthorised:boolean
 }

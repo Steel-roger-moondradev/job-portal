@@ -7,7 +7,7 @@ import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import { publishToProducer } from '../producer.js';
 import { forgotPasswordTemplate } from '../utils/forgotpassword.js';
- import { redisClient } from '../index.js';
+//  import { redisClient } from '../index.js';
 
 export const registerUser=TryCatch(async(req,res)=>{
     const {name,email,password,phone_number,role,bio}=req.body;
@@ -25,13 +25,13 @@ export const registerUser=TryCatch(async(req,res)=>{
     const hashpassword=await bcrypt.hash(password,10);
     
     //if not exists then create new user
-    let registeredUser;
+    let userObject;
     if(role=='recruiter'){
         
         const [user]=await sql`INSERT INTO users (email, name, password ,phone_number ,role)
                                     VALUES (${email},${name},${hashpassword},${phone_number},${role}) RETURNING
                                     user_id,name,email,password,phone_number,role,create_at`;
-        registeredUser=user;
+        userObject=user;
     }
     else if(role=='jobseeker'){
         const file=req.file;
@@ -49,12 +49,26 @@ export const registerUser=TryCatch(async(req,res)=>{
         const [user]=await sql`INSERT INTO users (email, name, password ,phone_number ,role,bio,resume,resume_public_id)
                                     VALUES (${email},${name},${hashpassword},${phone_number},${role},${bio},${data.url},${data.public_id}) RETURNING
                                     user_id,name,email,phone_number,role,created_at,bio,resume`;
-        registeredUser=user;
-        
-    }
-    
+        userObject=user;
+         
 
-    res.json(registeredUser);
+    }
+    if(userObject){
+        const secret=process.env.JWT_SEC as string;
+         
+         const payload={
+        id:userObject.user_id,
+            };
+        
+        const token=jwt.sign(payload,secret,{
+            expiresIn:"1d",
+        });
+       return res.json({
+            message:"User have been registered",
+            userObject,
+            token
+        });
+    }
 })
 
 
@@ -117,7 +131,7 @@ export const forgetPassword=TryCatch(async(req,res,next)=>{
         process.env.RESET_PASS_TKN as string,
         {expiresIn:"15m",}
     );
-    await redisClient.set(`reset:${email}`,resetToken,{EX:900});
+    // await redisClient.set(`reset:${email}`,resetToken,{EX:900});
     const resetLink=`${process.env.FRONTEND_URL}/reset/${resetToken}`;
     const message={
         to:email,
@@ -129,32 +143,32 @@ export const forgetPassword=TryCatch(async(req,res,next)=>{
     res.json("Mail has been send if email exists");
 })
 
-export const resetPassword=TryCatch(async(req,res,next)=>{
-    const{token}=req.params;
-    const {password}=req.body;
-    let decoded:any;
-        try{
-           decoded= jwt.verify(token as string,process.env.RESET_PASS_TKN as string);
-        }catch(error:any){
-            throw new ErrorHandler("Token is expired",400);
-        }
-        if(decoded.type!='reset'){
-            throw new ErrorHandler("INVALID TOKEN TYPE",400);
-        }
-        let email=decoded.emailId;
-        const storedToken=await redisClient.get(`reset:${email}`);
-        if(!storedToken||storedToken!=token){
-             throw new ErrorHandler("Token is expired",400);
-        }
-        const users=await sql `SELECT user_id, password from users WHERE email=${email}`;
-        if(users.length===0){
-             throw new ErrorHandler("user not found",404);
+// export const resetPassword=TryCatch(async(req,res,next)=>{
+//     const{token}=req.params;
+//     const {password}=req.body;
+//     let decoded:any;
+//         try{
+//            decoded= jwt.verify(token as string,process.env.RESET_PASS_TKN as string);
+//         }catch(error:any){
+//             throw new ErrorHandler("Token is expired",400);
+//         }
+//         if(decoded.type!='reset'){
+//             throw new ErrorHandler("INVALID TOKEN TYPE",400);
+//         }
+//         let email=decoded.emailId;
+//         const storedToken=await redisClient.get(`reset:${email}`);
+//         if(!storedToken||storedToken!=token){
+//              throw new ErrorHandler("Token is expired",400);
+//         }
+//         const users=await sql `SELECT user_id, password from users WHERE email=${email}`;
+//         if(users.length===0){
+//              throw new ErrorHandler("user not found",404);
 
-        }
-        let user=users[0];
-        const hashPassword=await bcrypt.hash(password,10);
-        await sql `UPDATE users SET password=${hashPassword} where user_id=${user.user_id}`;
-        await redisClient.del(`reset:${email}`);
-        res.json({message:"Your password is updated successfully"});
+//         }
+//         let user=users[0];
+//         const hashPassword=await bcrypt.hash(password,10);
+//         await sql `UPDATE users SET password=${hashPassword} where user_id=${user.user_id}`;
+//         await redisClient.del(`reset:${email}`);
+//         res.json({message:"Your password is updated successfully"});
 
-})
+// })

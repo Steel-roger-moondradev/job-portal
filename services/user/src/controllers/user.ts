@@ -7,9 +7,7 @@ import axios from 'axios'
 
 export const myProfile=TryCatch(async(req:authenticatedRequest,res,next)=>{
     const user=req.user;
-    res.json({
-        user,
-    })
+    res.json(user);
 })
 
 type UploadResponse = {
@@ -34,8 +32,9 @@ export const getProfile=TryCatch(async(req,res,next)=>{
         }
         const user=users[0];
         user.skill=user.skills||[]
+        const userObject=user;
         res.json({
-            user,
+            userObject
         })
 })
 export const updateProfile=TryCatch(async(req:authenticatedRequest,res,next)=>{
@@ -50,11 +49,12 @@ export const updateProfile=TryCatch(async(req:authenticatedRequest,res,next)=>{
     const [updatedprofile]=await sql`
     UPDATE users SET name=${newname},phone_number=${new_phone_number},bio=${newbio}
     WHERE user_id=${user.user_id}
-    RETURNING user_id,name,bio,phone_number;
+    RETURNING user_id,name,bio,phone_number,email,role,profile_pic,resume;
     `
+    const userObject=updatedprofile;
     res.json({
         message:"Profile is updated successfully",
-        updatedprofile,
+        userObject
     })
     
 })
@@ -79,11 +79,12 @@ export const updatePic=TryCatch(async(req:authenticatedRequest,res,next)=>{
         SET profile_pic = ${data.url},
             profile_pic_public_key = ${data.public_id}
         WHERE user_id = ${user.user_id}
-        RETURNING user_id,name,profile_pic
+        RETURNING user_id,name,bio,phone_number,email,role,profile_pic,resume
 `;
+const userObject=updateUser;
 res.json({
     message:"Profile pic is Updated",
-    updateUser
+    userObject
 })
 
 })
@@ -108,11 +109,12 @@ export const updateResume=TryCatch(async(req:authenticatedRequest,res,next)=>{
         SET resume = ${data.url},
             resume_public_id = ${data.public_id}
         WHERE user_id = ${user.user_id}
-        RETURNING user_id,name,resume_public_id
+        RETURNING user_id,name,bio,phone_number,email,role,profile_pic,resume
 `;
+const userObject=updateUser;
 res.json({
     message:"Resume is Updated",
-    updateUser
+    userObject
 })
 
 })

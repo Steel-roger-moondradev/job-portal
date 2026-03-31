@@ -2,18 +2,56 @@
 
 import Link from "next/link"
 import { Button } from "./ui/button"
-import { Briefcase, Home, Info, LogOut, Menu, User, X } from "lucide-react"
+import { Briefcase, Home, Info, LogOut, Menu, X,UserCircle } from "lucide-react"
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
-import { Avatar, AvatarFallback } from "./ui/avatar"
-import { useState } from "react"
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
+import { useEffect, useState } from "react"
 import { ModeToggle } from "./ui/darkmod-toggle"
+import { useappdata, user_service } from "@/context/AppContext";
+import Cookies from 'js-cookie'
+import toast from "react-hot-toast";
+import {User} from "../type"
 
 const NavBar = () => {
   const [initstate, setState] = useState(false)
   const toggler = () => setState(!initstate)
 
-  const isAuth = true
-  const logoutHandler = () => {}
+  const {isAuth,user,loading,setIsAuth,setUser}=useappdata();
+  const logoutHandler = () => {
+    Cookies.set("token","");
+    setIsAuth(false);
+    setUser(null);    
+    toast.success("Log out successfully");
+    
+  }
+      async function fetchUser(){
+        const token=Cookies.get("token");
+        if (!token) {
+            setIsAuth(false);
+            setUser(null);
+            return;
+}
+        try{
+            const {data}=await axios.get(`${user_service}/api/user/me`,
+                {
+                     headers: {
+                        Authorization: `Bearer ${token}`
+                            }
+                }
+            )
+            setUser(data as User);
+            console.log(data);
+            setIsAuth(true);
+        }
+        catch(error :any){
+            console.log(error.response?.data?.message);
+            setIsAuth(false);
+            setUser(null);
+        }
+    }
+    
+    useEffect(()=>
+        {fetchUser()},[]);
 
   return (
     <nav className="z-50 sticky top-0 bg-background/70 border-b backdrop-blur-xl shadow-sm relative">
@@ -77,10 +115,18 @@ const NavBar = () => {
           </div>
 
           {/* Right Section */}
-          <div className="hidden md:flex items-center gap-3">
+          
+          {
+            loading?  
+            // skeleton / placeholder
+          <div className="h-9 w-9">
+            <ModeToggle />
+          </div>: 
+          
+          <>
+            <div className="hidden md:flex items-center gap-3">
             {isAuth ? (
               <Popover>
-
                 {/* Avatar */}
                 <PopoverTrigger asChild>
                   <button className="flex items-center gap-2 transition-opacity hover:opacity-90">
@@ -88,8 +134,11 @@ const NavBar = () => {
                       className="h-9 w-9 ring-2 ring-offset-2 ring-offset-background ring-purple-500/20 cursor-pointer
                       hover:ring-purple-500/60 hover:scale-105 transition-all duration-300 shadow-sm hover:shadow-purple-500/20"
                     >
+                      <AvatarImage src ={
+                        user? user?.profile_pic as string :undefined }
+                       alt={user? user?.name : ""}/>
                       <AvatarFallback className="bg-purple-100 dark:bg-purple-900 text-purple-600">
-                        D
+                       {user? user?.name?.charAt(0).toUpperCase() : ""}
                       </AvatarFallback>
                     </Avatar>
                   </button>
@@ -101,13 +150,13 @@ const NavBar = () => {
                   align="end"
                 >
                   <div className="px-3 py-2 mb-2 border-b">
-                    <p className="text-sm font-semibold">Dev</p>
-                    <p className="text-xs opacity-60 truncate">Dev@gmail.com</p>
+                    <p className="text-sm font-semibold">{user?.name}</p>
+                    <p className="text-xs opacity-60 truncate">{user?.email}</p>
                   </div>
 
                   <Link href="/account">
                     <Button className="w-full justify-start gap-2" variant="ghost">
-                      <User size={16} />
+                      <UserCircle size={16} />
                       My Profile
                     </Button>
                   </Link>
@@ -115,7 +164,7 @@ const NavBar = () => {
                   <Button
                     className="w-full justify-start gap-2 mt-1"
                     variant="ghost"
-                    onClick={logoutHandler}
+                    onClick={()=>{logoutHandler()}}
                   >
                     <LogOut size={16} />
                     Logout
@@ -123,6 +172,7 @@ const NavBar = () => {
                 </PopoverContent>
 
               </Popover>
+              
             ) : (
               <Link href="/login">
                 <Button variant="ghost">Sign in</Button>
@@ -131,6 +181,9 @@ const NavBar = () => {
 
             <ModeToggle />
           </div>
+            </>
+          }
+          
 
           {/* Mobile Toggle */}
           <div className="md:hidden flex items-center gap-3">

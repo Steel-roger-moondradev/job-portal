@@ -3,6 +3,7 @@ import React from 'react'
 import Hero from '@/components/ui/Hero'
 import CarrerGuide from '@/components/ui/carrer-guide'
 import ResumeAnalyzer from '@/components/ui/resume-analyzer'
+
 const page = () => {
   return (
     <>

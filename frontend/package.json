@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@types/js-cookie": "^3.0.6",
+    "@types/react-router-dom": "^5.3.3",
     "axios": "^1.13.6",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -22,6 +23,7 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-hot-toast": "^2.6.0",
+    "react-router-dom": "^7.13.2",
     "shadcn": "^4.0.5",
     "tailwind-merge": "^3.5.0",
     "toast": "^0.5.4",

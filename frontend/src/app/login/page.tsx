@@ -14,7 +14,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 
-const Login = () => {
+const login = () => {
   const router = useRouter();
   const[email,setEmail]=useState("");
   const[password,setPassword]=useState("");
@@ -27,11 +27,16 @@ const Login = () => {
   const submitHandler=async (e:React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
     setBtnloading(true);
-    try{
-      if(isAuth){
+   if(isAuth){
         router.push('/');
       return;}
-      const {data}= await axios.post<LoginResponse>(`${auth_service}/api/auth/Login`,{email,password});
+
+    try{
+      
+      const {data}= await axios.post<LoginResponse>(`${auth_service}/api/auth/login`,{email,password});
+      if (!data || !data.token || !data.userObject) {
+  throw new Error("Invalid response");
+}
       toast.success(data.message);
       Cookies.set("token",data.token,{
         secure:true,
@@ -39,7 +44,8 @@ const Login = () => {
         path:"/",
       });
       setUser(data.userObject);
-      setIsAuth(true);
+      setIsAuth(true);  
+      router.push('/');
     }
     catch(error:any){
       toast.error(error.response?.data?.message);
@@ -128,4 +134,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default login

@@ -23,6 +23,7 @@ Zap,
 import axios from "axios";
 import { ResumeAnalysisResponse } from "@/type";
 import { utils_service } from "@/context/AppContext";
+import toast from "react-hot-toast";
 // import toast from "react-hot-toast";
 const ResumeAnalyzer = () => {
 const [open, setOpen] = useState(false);
@@ -34,13 +35,11 @@ const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
 const selectedFile = e.target.files?.[0];
 if (selectedFile) {
 if (selectedFile.type !== "application/pdf") {
-// toast.error("Please upload a PDF file");
-alert("Please upload a PDF file");
+toast.error("Please upload a PDF file");
 return;
 }
 if (selectedFile.size > 5 * 1024 * 1024) {
-// toast.error("File size should be less than 5MB");
-alert("File size should be less than 5MB");
+toast.error("File size should be less than 5MB");
 return;
 }
 setFile(selectedFile);
@@ -65,8 +64,7 @@ const convertToBase64 = (file: File): Promise<string> => {
 };
 const analyzeResume = async () => {
 if (!file) {
-// toast.error("Please upload a resume");
-alert("Please upload a resume");
+toast.error("Please upload a resume");
 return;
 }
 setLoading(true);
@@ -141,16 +139,14 @@ const base64 = await convertToBase64(file);
 // }
 if (!data) {
   console.error("Invalid API response:", data);
-  alert("Invalid response from server");
+  toast.error("Invalid response from server");
   return;
 }
 console.log("Raw API response:", JSON.stringify(data, null, 2));
 setResponse(data as ResumeAnalysisResponse);
-// toast.success("Resume analyzed successfully!");
-alert("Resume analyzed successfully!");
+ toast.success("Resume analyzed successfully!");
 } catch (error: any) {
-// toast.error(error.response?.data?.message || "Failed to analyze resume");
-alert(error.response?.data?.message || "Failed to analyze resume");
+toast.error(error.response?.data?.message || "Failed to analyze resume");
 console.log(error.config.url);
 } finally {
 setLoading(false);
@@ -481,7 +477,5 @@ Analyze Another Resume
 );
 };
 export default ResumeAnalyzer;
-
-
 
 
