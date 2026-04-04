@@ -6,6 +6,7 @@ import Info from '../component/info';
 import axios from 'axios';
 import Cookies from 'js-cookie'
 import { LoginResponse, User } from '@/type';
+import Skills from '../component/skills';   
 
 const Account = () => {
     const[profileUser,setprofileUser]=useState<User|null>(null);
@@ -30,7 +31,9 @@ const Account = () => {
 
   return (
     <>
+    
     <Info user={profileUser} isAuthorised={false}/>
+    <Skills user={profileUser} isAuthorised={false}/>
 
     </>
     

@@ -71,10 +71,15 @@ export interface AppContextType{
   loading:boolean,
   btnLoading:boolean,
   isAuth:boolean,
+  btnloadingR:boolean,
+  btnLoadingE:boolean,
   setUser:React.Dispatch<React.SetStateAction<User|null>>,
   setLoading:React.Dispatch<React.SetStateAction<boolean>>,
   setIsAuth:React.Dispatch<React.SetStateAction<boolean>>,
   setBtnloading:React.Dispatch<React.SetStateAction<boolean>>,
+  profileUpdatepic:(formData:any)=>Promise<void>,
+  ResumeUpdate:(formData:any)=>Promise<void>,
+  profileUpdate:(name:string,phone_number:string,bio:string|"",email:string)=>Promise<void>,
 }
 export interface AppProviderProps{
   children:ReactNode,

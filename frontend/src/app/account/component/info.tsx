@@ -1,131 +1,57 @@
 "use client";
 
-import { FileEdit, Mail, Phone, BookOpen, BookImage } from "lucide-react";
+import { FileEdit, Mail, Phone, BookOpen, Plus, X, Sparkles } from "lucide-react";
 import {InfoProps, LoginResponse} from "../../../type"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import React, { useEffect, useRef, useState } from "react";
-import { useappdata, user_service } from "@/context/AppContext";
-import Cookies from 'js-cookie'
-import toast from "react-hot-toast";
-import axios from 'axios'
+import { useappdata, user_service,} from "@/context/AppContext";
 
-
-
-
-
-const Info : React.FC<InfoProps>= ({ user, isAuthorised }) => {
+const Info : React.FC<InfoProps>= ({ user:profileUser, isAuthorised }) => {
     const[open,setOpen]=useState(false);
-    const[profileUser,setprofileUser]=useState(user);
     const profileupdate=useRef<HTMLInputElement>(null);
-     const resumeupdate=useRef<HTMLInputElement>(null);
-    const [btnLoading,setBtnloading]=useState(false);
-    const [btnLoadingR,setBtnloadingR]=useState(false);
+    const resumeupdate=useRef<HTMLInputElement>(null);
     const[email,setEmail]=useState("");
     const[phone_number,setPhone_number]=useState("");
     const[name,setName]=useState("");
     const[bio,setBio]=useState("");
-    const{user:globalUser,setUser}=useappdata();
+    
+    const{profileUpdatepic,ResumeUpdate,profileUpdate,btnloadingR,btnLoading,btnLoadingE}=useappdata();
 
     const ResumeButton =()=>{
       resumeupdate?.current?.click()
     }
 
-    useEffect(() => {
-  if (!profileUser) {
-    if(user){
-    setprofileUser(user);
-    setName(user!.name);
-    setEmail(user!.email);
-    setPhone_number(user!.phone_number);
-    if(user.bio)
-    setBio(user.bio);}
-  }
-}, [user]);
-
-useEffect(()=>{
-  if(profileUser&&profileUser!.user_id==globalUser!.user_id){
-  setUser(profileUser)}
-},[profileUser])
-
     const handleProfileUpdates =async(e:React.ChangeEvent<HTMLInputElement>)=>{
       const file=e?.target?.files?.[0];
-      if(!file) return;
-      setBtnloading(true);
+      if(file){
       const formData=new FormData();
       formData.append("file",file);
-      try{
-        const token=Cookies.get("token");
-        const {data}=await axios.put<LoginResponse>(`${user_service}/api/user/update/pic`,formData,
-          {
-            headers:{
-              Authorization :`Bearer ${token}`
-            }
-          }
-        );
-        toast.success("Profile updated successfully");
-          setprofileUser(data.userObject);
-        
-      }catch(error :any){
-        toast.error(error.response?.data?.message);
-      }
-      finally{
-        setBtnloading(false);
+        profileUpdatepic(formData);
       }
     }
 
-     const handleResumeUpdates =async(e:React.ChangeEvent<HTMLInputElement>)=>{
-      setBtnloadingR(true);
+    const handleResumeUpdates =async(e:React.ChangeEvent<HTMLInputElement>)=>{
       const file=e?.target?.files?.[0];
-      if(!file) return;
+      if(file){
       const formData=new FormData();
       formData.append("file",file);
-      try{
-        const token=Cookies.get("token");
-        const {data}=await axios.put<LoginResponse>(`${user_service}/api/user/update/resume`,formData,
-          {
-            headers:{
-              Authorization :`Bearer ${token}`
-            }
-          }
-        );
-        toast.success("Resume updated successfully");
-          setprofileUser(data.userObject);
-        
-      }catch(error :any){
-        toast.error(error.response?.data?.message);
-      }
-      finally{
-        setBtnloadingR(false);
-      }
+      ResumeUpdate(formData)}
     }
 
     const SubmitChanges=async ()=>{
-       
-        try{
-            const token=Cookies.get("token");
-            const payload = bio
-                            ? { name, email, phone_number, bio }
-                            : { name, email, phone_number };
-            
-            const {data}=await axios.put<LoginResponse>(`${user_service}/api/user/update/profile`,
-                  payload,
-                {
-                    headers:{
-                        Authorization :`Bearer ${token}`
-                    }
-                }
-                
-            );
-            setprofileUser(data.userObject);
-            toast.success("Profile updated successfully");
-        }
-        catch(error:any){
-            toast.error(error.response?.data?.message);
-        }
+       profileUpdate(name,phone_number,bio,email);
     }
+
+    const editprofile=async()=>{
+      setName(profileUser!.name);
+      setEmail(profileUser!.email);
+      setBio(profileUser? profileUser.bio ? profileUser.bio:"" :"")
+      setPhone_number(profileUser!.phone_number);
+    }
+
 
   return (
     <div className="min-h-screen bg-linear-to-br from-[#f8f9ff] via-[#eef1ff] to-[#f0f4ff] dark:from-[#0f1117] dark:via-[#13151f] dark:to-[#111420] flex items-center justify-center p-6">
@@ -151,13 +77,48 @@ useEffect(()=>{
         isAuthorised ?
         <>
             {/* Dialog Trigger */}
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={open} onOpenChange={setOpen} >
         <DialogTrigger asChild>
-          <button className="inline-flex items-center gap-2 px-5 py-2.5 bg-linear-to-r from-indigo-500 to-violet-500 text-white text-sm font-semibold rounded-xl shadow-[0_4px_14px_rgba(99,102,241,0.35)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(99,102,241,0.45)] active:scale-95 transition-all duration-200">
-            <FileEdit size={15} />
-            Edit Profile
-          </button>
-        </DialogTrigger>
+  <button
+    onClick={editprofile}
+    disabled={btnLoadingE}
+    className={`inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200
+      ${btnLoading 
+        ? "bg-gray-400 cursor-not-allowed shadow-none" 
+        : "bg-linear-to-r from-indigo-500 to-violet-500 text-white shadow-[0_4px_14px_rgba(99,102,241,0.35)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(99,102,241,0.45)] active:scale-95"
+      }`}
+  >
+    {btnLoadingE ? (
+      <>
+        <svg
+          className="animate-spin h-4 w-4"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+            fill="none"
+          />
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8v8z"
+          />
+        </svg>
+        Updating...
+      </>
+    ) : (
+      <>
+        <FileEdit size={15} />
+        Edit Profile
+      </>
+    )}
+  </button>
+</DialogTrigger>
 
         <DialogContent className="sm:max-w-md rounded-2xl bg-white dark:bg-gray-900 border border-indigo-100 dark:border-gray-700 shadow-[0_20px_60px_rgba(99,102,241,0.18)] dark:shadow-[0_20px_60px_rgba(99,102,241,0.25)]">
           <DialogHeader>
@@ -199,7 +160,7 @@ useEffect(()=>{
             </div>
 
             <div className="space-y-1.5">
-              <Label className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Phone Number</Label>
+              <Label className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Bio</Label>
               <Input
                 type="text"
                 placeholder="Enter Bio"
@@ -293,30 +254,23 @@ useEffect(()=>{
             </div>
           </div>
 
-          {/* Bio Section — matches page theme */}
+          {/* Bio Section */}
           <div className="mb-6">
-  <label className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider block mb-1.5">
-    Bio
-  </label>
-
-  <div className="group flex items-start gap-3.5 p-4 bg-white dark:bg-gray-800/60 rounded-xl border border-gray-100 dark:border-gray-700/60 hover:border-indigo-200 dark:hover:border-indigo-700 hover:shadow-[0_0_0_3px_rgba(99,102,241,0.07)] dark:hover:shadow-[0_0_0_3px_rgba(99,102,241,0.12)] transition-all duration-200">
-
-    {/* Icon */}
-    <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-900/40 flex items-center justify-center mt-1 group-hover:bg-indigo-100 dark:group-hover:bg-indigo-900/60 transition-colors duration-200">
-      <BookOpen size={14} className="text-indigo-400 dark:text-indigo-500" />
-    </div>
-
-    {/* Bio Text */}
-    <div className="flex-1 text-sm text-gray-700 dark:text-gray-300 leading-relaxed break-words whitespace-pre-wrap">
-      {bio || "Empty bio"}
-    </div>
-
-  </div>
-</div>
+            <label className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider block mb-1.5">
+              Bio
+            </label>
+            <div className="group flex items-start gap-3.5 p-4 bg-white dark:bg-gray-800/60 rounded-xl border border-gray-100 dark:border-gray-700/60 hover:border-indigo-200 dark:hover:border-indigo-700 hover:shadow-[0_0_0_3px_rgba(99,102,241,0.07)] dark:hover:shadow-[0_0_0_3px_rgba(99,102,241,0.12)] transition-all duration-200">
+              <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-900/40 flex items-center justify-center mt-1 group-hover:bg-indigo-100 dark:group-hover:bg-indigo-900/60 transition-colors duration-200">
+                <BookOpen size={14} className="text-indigo-400 dark:text-indigo-500" />
+              </div>
+              <div className="flex-1 text-sm text-gray-700 dark:text-gray-300 leading-relaxed break-words whitespace-pre-wrap">
+                {bio || "Empty bio"}
+              </div>
+            </div>
+          </div>
 
           {/* Resume Section */}
-            
-            <div>
+          <div>
             <label className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider block mb-1.5">Resume</label>
             <div className="flex items-center justify-between gap-4 p-4 bg-white dark:bg-gray-800/60 rounded-xl border-2 border-dashed border-indigo-100 dark:border-indigo-800/50 hover:border-indigo-300 dark:hover:border-indigo-600 hover:bg-indigo-50/30 dark:hover:bg-indigo-950/30 transition-all duration-200">
               <div className="flex items-center gap-3">
@@ -334,8 +288,8 @@ useEffect(()=>{
                 </div>
               </div>
                 
-              { !btnLoadingR ? <>
-               <input type="file" accept=".pdf,.doc,.docx" id="resumeUpload" className="hidden" ref ={resumeupdate} onChange={handleResumeUpdates}  />
+              { !btnloadingR ? <>
+               <input type="file" accept=".pdf,.doc,.docx" id="resumeUpload" className="hidden" ref={resumeupdate} onChange={handleResumeUpdates}  />
               <button onClick={ResumeButton}
                 className="inline-flex items-center gap-2 px-4 py-2 bg-linear-to-r from-indigo-500 to-violet-500 text-white text-sm font-semibold rounded-xl shadow-[0_3px_10px_rgba(99,102,241,0.3)] hover:-translate-y-0.5 hover:shadow-[0_5px_16px_rgba(99,102,241,0.4)] active:scale-95 transition-all duration-200 flex-shrink-0"
               >
@@ -345,8 +299,7 @@ useEffect(()=>{
               :
               <>
                <button
-                  onClick={ResumeButton}
-                  disabled={btnLoadingR}
+                  disabled={btnloadingR}
                   className={`inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-xl flex-shrink-0 transition-all duration-200 "bg-gray-400 text-gray-200 cursor-not-allowed opacity-70 shadow-none"hover:-translate-y-0.5 hover:shadow-[0_5px_16px_rgba(99,102,241,0.4)] active:scale-95"
                   `}
                 >
@@ -362,24 +315,18 @@ useEffect(()=>{
         <>
           {/* Bio Section for non-authorised view */}
           <div className="mb-6">
-  <label className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider block mb-1.5">
-    Bio
-  </label>
-
-  <div className="group flex items-start gap-3.5 p-4 bg-white dark:bg-gray-800/60 rounded-xl border border-gray-100 dark:border-gray-700/60 hover:border-indigo-200 dark:hover:border-indigo-700 hover:shadow-[0_0_0_3px_rgba(99,102,241,0.07)] dark:hover:shadow-[0_0_0_3px_rgba(99,102,241,0.12)] transition-all duration-200">
-
-    {/* Icon */}
-    <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-900/40 flex items-center justify-center mt-1 group-hover:bg-indigo-100 dark:group-hover:bg-indigo-900/60 transition-colors duration-200">
-      <BookOpen size={14} className="text-indigo-400 dark:text-indigo-500" />
-    </div>
-
-    {/* Bio Text */}
-    <div className="flex-1 text-sm text-gray-700 dark:text-gray-300 leading-relaxed break-words whitespace-pre-wrap">
-      {bio || "Empty bio"}
-    </div>
-
-  </div>
-</div>
+            <label className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider block mb-1.5">
+              Bio
+            </label>
+            <div className="group flex items-start gap-3.5 p-4 bg-white dark:bg-gray-800/60 rounded-xl border border-gray-100 dark:border-gray-700/60 hover:border-indigo-200 dark:hover:border-indigo-700 hover:shadow-[0_0_0_3px_rgba(99,102,241,0.07)] dark:hover:shadow-[0_0_0_3px_rgba(99,102,241,0.12)] transition-all duration-200">
+              <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-900/40 flex items-center justify-center mt-1 group-hover:bg-indigo-100 dark:group-hover:bg-indigo-900/60 transition-colors duration-200">
+                <BookOpen size={14} className="text-indigo-400 dark:text-indigo-500" />
+              </div>
+              <div className="flex-1 text-sm text-gray-700 dark:text-gray-300 leading-relaxed break-words whitespace-pre-wrap">
+                {bio || "Empty bio"}
+              </div>
+            </div>
+          </div>
         </>
     }
 
