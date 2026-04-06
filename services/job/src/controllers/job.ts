@@ -55,7 +55,7 @@ export const createCompany=TryCatch(async(req:authenticatedRequest,res,next)=>{
 
     const company=insertCompany[0];
     res.json({
-        message:"Company listied successfully",
+        message:"Company listed successfully",
         company
     });
 })
@@ -182,12 +182,12 @@ export const getAllCompanies=TryCatch(async(req:authenticatedRequest,res,next)=>
     if(userRole.role=='jobseeker'){
         throw new ErrorHandler("only recruiter is allowed",401);
     }
-    const [company]=await sql `
+    const company=await sql `
     SELECT * FROM companies WHERE recruiter_id=${user?.user_id}
     `;
     res.json({
         message:"All companies Listed by you",
-        company
+        companies:company
     })
 })
 
