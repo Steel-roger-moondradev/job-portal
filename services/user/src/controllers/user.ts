@@ -131,14 +131,17 @@ export const addSkill=TryCatch(async(req:authenticatedRequest,res,next)=>{
         // to make our query a whole transaction
         await sql`BEGIN`    
 
-        const [{skill_id:skillId}]=await sql`
+        const skillRows =await sql`
         INSERT INTO skills(name)
-        VALUES (${skillName.trim()})
+        VALUES (${skillName.trim().toLowerCase()})
         ON CONFLICT (name)
         DO UPDATE SET name=EXCLUDED.name
         RETURNING skill_id
         `;
-
+        if (skillRows.length === 0) {
+        throw new ErrorHandler("Failed to resolve skill", 500);
+        }
+        const skillId = skillRows[0].skill_id;
         const insertionResult =await sql`
         INSERT INTO users_skills(user_id,skill_id)
         VALUES (${userId},${skillId})

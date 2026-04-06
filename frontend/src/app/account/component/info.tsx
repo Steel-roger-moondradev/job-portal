@@ -54,12 +54,11 @@ const Info : React.FC<InfoProps>= ({ user:profileUser, isAuthorised }) => {
 
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-[#f8f9ff] via-[#eef1ff] to-[#f0f4ff] dark:from-[#0f1117] dark:via-[#13151f] dark:to-[#111420] flex items-center justify-center p-6">
-
-  <div className="w-full max-w-4xl bg-white/85 dark:bg-gray-900/80 backdrop-blur-xl shadow-[0_8px_40px_rgba(99,102,241,0.10)] dark:shadow-[0_8px_40px_rgba(99,102,241,0.15)] rounded-3xl p-10 border border-white/70 dark:border-gray-700/50">
+<div className="w-full p-6 bg-linear-to-br from-[#f8f9ff] via-[#eef1ff] to-[#f0f4ff] dark:from-[#0f1117] dark:via-[#13151f] dark:to-[#111420]">
+  <div className="w-full max-w-4xl bg-white/85 dark:bg-gray-900/80 backdrop-blur-xl shadow-[0_8px_40px_rgba(99,102,241,0.10)] dark:shadow-[0_8px_40px_rgba(99,102,241,0.15)] rounded-3xl p-6 border border-white/70 dark:border-gray-700/50">
 
     {/* Header */}
-    <div className="flex justify-between items-center mb-8">
+    <div className="flex justify-between items-center mb-3">
       {isAuthorised ?
       <>
       <h1 className="text-3xl font-bold bg-linear-to-r from-indigo-500 to-violet-500 bg-clip-text text-transparent tracking-tight">
@@ -159,16 +158,17 @@ const Info : React.FC<InfoProps>= ({ user:profileUser, isAuthorised }) => {
               />
             </div>
 
-            <div className="space-y-1.5">
-              <Label className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Bio</Label>
-              <Input
-                type="text"
-                placeholder="Enter Bio"
-                value={bio}
+            {profileUser?.role === "jobseeker" && (
+              <div className="space-y-1.5">
+                <Label className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Bio</Label>
+                <Input
+                  type="text"
+                  placeholder="Enter Bio"
+                  value={bio}
                 onChange={(e)=>{setBio(e.target.value)}}
                 className="bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-200 placeholder:text-gray-300 dark:placeholder:text-gray-600 rounded-xl focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 transition-all"
               />
-            </div>
+            </div>)}
 
             <div className="flex justify-end gap-3 pt-2">
               <Button
@@ -255,27 +255,32 @@ const Info : React.FC<InfoProps>= ({ user:profileUser, isAuthorised }) => {
           </div>
 
           {/* Bio Section */}
-          <div className="mb-6">
-            <label className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider block mb-1.5">
-              Bio
-            </label>
-            <div className="group flex items-start gap-3.5 p-4 bg-white dark:bg-gray-800/60 rounded-xl border border-gray-100 dark:border-gray-700/60 hover:border-indigo-200 dark:hover:border-indigo-700 hover:shadow-[0_0_0_3px_rgba(99,102,241,0.07)] dark:hover:shadow-[0_0_0_3px_rgba(99,102,241,0.12)] transition-all duration-200">
-              <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-900/40 flex items-center justify-center mt-1 group-hover:bg-indigo-100 dark:group-hover:bg-indigo-900/60 transition-colors duration-200">
+          {profileUser?.role === "jobseeker" && (
+            <div className="mb-6">
+              <label className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider block mb-1.5">
+                Bio
+              </label>
+              <div className="group flex items-center gap-3.5 p-4 bg-white dark:bg-gray-800/60 rounded-xl border border-gray-100 dark:border-gray-700/60 hover:border-indigo-200 dark:hover:border-indigo-700 hover:shadow-[0_0_0_3px_rgba(99,102,241,0.07)] dark:hover:shadow-[0_0_0_3px_rgba(99,102,241,0.12)] transition-all duration-200">
+
+              <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-900/40 flex items-center justify-center group-hover:bg-indigo-100 dark:group-hover:bg-indigo-900/60 transition-colors duration-200">
                 <BookOpen size={14} className="text-indigo-400 dark:text-indigo-500" />
               </div>
+
               <div className="flex-1 text-sm text-gray-700 dark:text-gray-300 leading-relaxed break-words whitespace-pre-wrap">
-                {bio || "Empty bio"}
+                {profileUser?.bio || "Empty bio"}
               </div>
+
             </div>
-          </div>
+          </div>)}
 
           {/* Resume Section */}
-          <div>
-            <label className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider block mb-1.5">Resume</label>
-            <div className="flex items-center justify-between gap-4 p-4 bg-white dark:bg-gray-800/60 rounded-xl border-2 border-dashed border-indigo-100 dark:border-indigo-800/50 hover:border-indigo-300 dark:hover:border-indigo-600 hover:bg-indigo-50/30 dark:hover:bg-indigo-950/30 transition-all duration-200">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-linear-to-br from-indigo-50 to-violet-100 dark:from-indigo-950 dark:to-violet-900 rounded-xl flex items-center justify-center text-lg">
-                  📄
+          {profileUser?.role === "jobseeker" && (
+            <div>
+              <label className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider block mb-1.5">Resume</label>
+              <div className="flex items-center justify-between gap-4 p-4 bg-white dark:bg-gray-800/60 rounded-xl border-2 border-dashed border-indigo-100 dark:border-indigo-800/50 hover:border-indigo-300 dark:hover:border-indigo-600 hover:bg-indigo-50/30 dark:hover:bg-indigo-950/30 transition-all duration-200">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-linear-to-br from-indigo-50 to-violet-100 dark:from-indigo-950 dark:to-violet-900 rounded-xl flex items-center justify-center text-lg">
+                    📄
                 </div>
                 <div>
                   <p className="text-xs text-gray-400 dark:text-gray-500 font-medium mb-0.5">Current Resume</p>
@@ -308,7 +313,7 @@ const Info : React.FC<InfoProps>= ({ user:profileUser, isAuthorised }) => {
               </>
                }
             </div>
-          </div>
+          </div>)}
           
         </>
         :
@@ -323,7 +328,7 @@ const Info : React.FC<InfoProps>= ({ user:profileUser, isAuthorised }) => {
                 <BookOpen size={14} className="text-indigo-400 dark:text-indigo-500" />
               </div>
               <div className="flex-1 text-sm text-gray-700 dark:text-gray-300 leading-relaxed break-words whitespace-pre-wrap">
-                {bio || "Empty bio"}
+                {profileUser?.bio || "Empty bio"}
               </div>
             </div>
           </div>

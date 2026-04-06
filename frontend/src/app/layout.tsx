@@ -1,5 +1,6 @@
 import NavBar from "@/components/navbar";
 import "./globals.css";
+import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { AppProvider } from "@/context/AppContext";
 
@@ -20,6 +21,7 @@ export default function RootLayout({
           >
             <NavBar/>
             {children}
+            <Toaster position="top-right" />
           </ThemeProvider>
         </AppProvider>
         

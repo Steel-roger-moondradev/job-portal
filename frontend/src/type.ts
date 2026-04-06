@@ -1,3 +1,4 @@
+import { Timestamp } from "next/dist/server/lib/cache-handlers/types";
 import { ReactNode } from "react";
 
 export interface JobOptions {
@@ -93,3 +94,13 @@ export interface InfoProps{
   user:User|null,
   isAuthorised:boolean
 }
+export interface Company  {
+  company_id: number;
+  name: string;
+  description: string;
+  website: string;
+  logo: string|null;
+  logo_public_id:string|null;
+  recruiter_id:number;
+  created_at:Timestamp;
+};

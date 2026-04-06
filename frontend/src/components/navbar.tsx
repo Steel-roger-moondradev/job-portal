@@ -11,6 +11,7 @@ import { useappdata, user_service } from "@/context/AppContext";
 import Cookies from 'js-cookie'
 import toast from "react-hot-toast";
 import {User} from "../type"
+import axios from "axios";
 
 const NavBar = () => {
   const [initstate, setState] = useState(false)
@@ -40,7 +41,6 @@ const NavBar = () => {
                 }
             )
             setUser(data as User);
-            console.log(data);
             setIsAuth(true);
         }
         catch(error :any){

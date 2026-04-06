@@ -10,7 +10,7 @@ router.put("/update/profile",isAuth,updateProfile);
 router.put("/update/pic",isAuth,uploadFile,updatePic);
 router.put("/update/resume",isAuth,uploadFile,updateResume);
 router.post("/add/skills",isAuth,addSkill);
-router.delete("/delete/skills",isAuth,deleteSkill);
+router.put("/delete/skills",isAuth,deleteSkill);
 router.post("/apply",isAuth,applyForJob);
 router.get("/:userId",isAuth,getProfile);
 
