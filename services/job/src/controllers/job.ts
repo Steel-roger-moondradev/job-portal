@@ -143,22 +143,13 @@ export const updateJob=TryCatch(async(req:authenticatedRequest,res,next)=>{
     }
     const {title,description,salary,location,openings,job_type,work_location,role,company_id}=req.body;
 
-    if(!title||!description||!salary||!location||!openings||!job_type||!work_location||!role||!company_id){
+    if(!title||!description||!salary||!location||!openings||!job_type||!work_location||!role){
         throw new ErrorHandler("Data is insufficient",401);
-    }
-
-    const [company]=await sql `
-    SELECT name FROM companies WHERE company_id=${company_id}
-    AND recruiter_id=${user.user_id}
-    `;
-
-    if(!company){
-        throw new ErrorHandler("Company does not exist or you are not authorized to Update",400);
     }
 
     const [updatedJob]=await sql `
     UPDATE  jobs
-    SET title=${title},description=${description},salary=${salary},location=${location},openings=${openings},job_type=${job_type},work_location=${work_location},role=${role},company_id=${company_id},posted_by_recruiter_id=${user.user_id}
+    SET title=${title},description=${description},salary=${salary},location=${location},openings=${openings},job_type=${job_type},work_location=${work_location},role=${role},posted_by_recruiter_id=${user.user_id}
     WHERE job_id=${req.params.job_id}
     RETURNING *
     `;
@@ -174,24 +165,14 @@ export const getAllCompanies=TryCatch(async(req:authenticatedRequest,res,next)=>
     if(!user){
         throw new ErrorHandler("Authentication is required",401);
     }
-     const Usersrole=await sql`
-    SELECT role FROM users WHERE user_id=${user?.user_id}
-    `;
-    const userRole=Usersrole[0];
 
-    if(userRole.role=='jobseeker'){
-        throw new ErrorHandler("only recruiter is allowed",401);
-    }
     const company=await sql `
     SELECT * FROM companies WHERE recruiter_id=${user?.user_id}
     `;
-    res.json({
-        message:"All companies Listed by you",
-        companies:company
-    })
+    res.json(company)
 })
 
-export const getAllCompanyDetails=TryCatch(async(req:authenticatedRequest,res,next)=>{
+export const getAllCompanyDetails=TryCatch(async(req,res,next)=>{
     const [companyDetails]=await sql`
     SELECT c.*, COALESCE(
     (SELECT json_agg(j.*) FROM jobs j WHERE j.company_id=c.company_id),
@@ -203,9 +184,7 @@ export const getAllCompanyDetails=TryCatch(async(req:authenticatedRequest,res,ne
     if(!companyDetails){
         throw new ErrorHandler("No company of this id ",400);
     }
-    res.json({
-        companyDetails
-    })
+    res.json(companyDetails)
 })
 
 export const getAllActiveJobs =TryCatch(async(req,res)=>{

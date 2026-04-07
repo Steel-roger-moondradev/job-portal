@@ -103,4 +103,24 @@ export interface Company  {
   logo_public_id:string|null;
   recruiter_id:number;
   created_at:Timestamp;
+  jobs:Job[]|null;
 };
+export interface CompanyProps{
+  isAuthorised:boolean;}
+
+  export interface Job{
+    job_id: number;
+    title: string;
+    description: string;
+    salary: number;
+    location: string;
+    job_type: "internship" | "full-time" | "part-time" | "contract";
+    openings: number;
+    role: string;
+    work_location: "on-site" | "hybrid" | "remote";
+    company_id: number;
+    posted_by_recruiter_id: number;
+    created_at: Timestamp;
+    is_active:boolean;
+  }
+

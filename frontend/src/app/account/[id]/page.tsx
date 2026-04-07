@@ -40,7 +40,7 @@ const Account = () => {
     {profileUser?.role=="jobseeker" ? (
       <Skills user={profileUser} isAuthorised={false}/>
     ) : (
-      <Company user={profileUser} isAuthorised={false}/>
+      <Company  isAuthorised={false}/>
     )}
     </div>
 
