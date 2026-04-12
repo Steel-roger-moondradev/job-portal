@@ -1,0 +1,120 @@
+"filename", "language", "JSON with Comments", "JSON", "TypeScript", "JavaScript", "TypeScript JSX", "PostCSS", "Markdown", "XML", "comment", "blank", "total"
+"c:\Users\HP\Desktop\project\Project 2\frontend\README.md", "Markdown", 0, 0, 0, 0, 0, 0, 23, 0, 0, 14, 37
+"c:\Users\HP\Desktop\project\Project 2\frontend\components.json", "JSON", 0, 25, 0, 0, 0, 0, 0, 0, 0, 1, 26
+"c:\Users\HP\Desktop\project\Project 2\frontend\eslint.config.mjs", "JavaScript", 0, 0, 0, 14, 0, 0, 0, 0, 2, 3, 19
+"c:\Users\HP\Desktop\project\Project 2\frontend\next.config.ts", "TypeScript", 0, 0, 4, 0, 0, 0, 0, 0, 1, 3, 8
+"c:\Users\HP\Desktop\project\Project 2\frontend\package-lock.json", "JSON", 0, 11607, 0, 0, 0, 0, 0, 0, 0, 1, 11608
+"c:\Users\HP\Desktop\project\Project 2\frontend\package.json", "JSON", 0, 36, 0, 0, 0, 0, 0, 0, 0, 1, 37
+"c:\Users\HP\Desktop\project\Project 2\frontend\postcss.config.mjs", "JavaScript", 0, 0, 0, 6, 0, 0, 0, 0, 0, 2, 8
+"c:\Users\HP\Desktop\project\Project 2\frontend\public\file.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1
+"c:\Users\HP\Desktop\project\Project 2\frontend\public\globe.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1
+"c:\Users\HP\Desktop\project\Project 2\frontend\public\next.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1
+"c:\Users\HP\Desktop\project\Project 2\frontend\public\vercel.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1
+"c:\Users\HP\Desktop\project\Project 2\frontend\public\window.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1
+"c:\Users\HP\Desktop\project\Project 2\frontend\src\app\globals.css", "PostCSS", 0, 0, 0, 0, 0, 124, 0, 0, 0, 5, 129
+"c:\Users\HP\Desktop\project\Project 2\frontend\src\app\layout.tsx", "TypeScript JSX", 0, 0, 0, 0, 24, 0, 0, 0, 0, 2, 26
+"c:\Users\HP\Desktop\project\Project 2\frontend\src\app\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 13, 0, 0, 0, 0, 2, 15
+"c:\Users\HP\Desktop\project\Project 2\frontend\src\components\navbar.tsx", "TypeScript JSX", 0, 0, 0, 0, 150, 0, 0, 0, 13, 36, 199
+"c:\Users\HP\Desktop\project\Project 2\frontend\src\components\ui\Hero.tsx", "TypeScript JSX", 0, 0, 0, 0, 93, 0, 0, 0, 10, 17, 120
+"c:\Users\HP\Desktop\project\Project 2\frontend\src\components\ui\avatar.tsx", "TypeScript JSX", 0, 0, 0, 0, 103, 0, 0, 0, 0, 10, 113
+"c:\Users\HP\Desktop\project\Project 2\frontend\src\components\ui\button.tsx", "TypeScript JSX", 0, 0, 0, 0, 62, 0, 0, 0, 0, 6, 68
+"c:\Users\HP\Desktop\project\Project 2\frontend\src\components\ui\card.tsx", "TypeScript JSX", 0, 0, 0, 0, 94, 0, 0, 0, 0, 10, 104
+"c:\Users\HP\Desktop\project\Project 2\frontend\src\components\ui\carrer-guide.tsx", "TypeScript JSX", 0, 0, 0, 0, 133, 0, 0, 0, 0, 9, 142
+"c:\Users\HP\Desktop\project\Project 2\frontend\src\components\ui\darkmod-toggle.tsx", "TypeScript JSX", 0, 0, 0, 0, 36, 0, 0, 0, 0, 5, 41
+"c:\Users\HP\Desktop\project\Project 2\frontend\src\components\ui\dialog.tsx", "TypeScript JSX", 0, 0, 0, 0, 155, 0, 0, 0, 0, 14, 169
+"c:\Users\HP\Desktop\project\Project 2\frontend\src\components\ui\dropdown-menu.tsx", "TypeScript JSX", 0, 0, 0, 0, 251, 0, 0, 0, 0, 19, 270
+"c:\Users\HP\Desktop\project\Project 2\frontend\src\components\ui\input.tsx", "TypeScript JSX", 0, 0, 0, 0, 16, 0, 0, 0, 0, 4, 20
+"c:\Users\HP\Desktop\project\Project 2\frontend\src\components\ui\label.tsx", "TypeScript JSX", 0, 0, 0, 0, 20, 0, 0, 0, 0, 5, 25
+"c:\Users\HP\Desktop\project\Project 2\frontend\src\components\ui\popover.tsx", "TypeScript JSX", 0, 0, 0, 0, 79, 0, 0, 0, 0, 11, 90
+"c:\Users\HP\Desktop\project\Project 2\frontend\src\components\ui\theme-provider.tsx", "TypeScript JSX", 0, 0, 0, 0, 9, 0, 0, 0, 0, 2, 11
+"c:\Users\HP\Desktop\project\Project 2\frontend\src\lib\utils.ts", "TypeScript", 0, 0, 5, 0, 0, 0, 0, 0, 0, 2, 7
+"c:\Users\HP\Desktop\project\Project 2\frontend\src\type.ts", "TypeScript", 0, 0, 23, 0, 0, 0, 0, 0, 0, 4, 27
+"c:\Users\HP\Desktop\project\Project 2\frontend\tsconfig.json", "JSON with Comments", 34, 0, 0, 0, 0, 0, 0, 0, 0, 1, 35
+"c:\Users\HP\Desktop\project\Project 2\services\auth\dist\app.js", "JavaScript", 0, 0, 0, 7, 0, 0, 0, 0, 2, 1, 10
+"c:\Users\HP\Desktop\project\Project 2\services\auth\dist\controllers\auth.js", "JavaScript", 0, 0, 0, 135, 0, 0, 0, 0, 3, 1, 139
+"c:\Users\HP\Desktop\project\Project 2\services\auth\dist\index.js", "JavaScript", 0, 0, 0, 62, 0, 0, 0, 0, 0, 1, 63
+"c:\Users\HP\Desktop\project\Project 2\services\auth\dist\middleware\multer.js", "JavaScript", 0, 0, 0, 4, 0, 0, 0, 0, 0, 1, 5
+"c:\Users\HP\Desktop\project\Project 2\services\auth\dist\producer.js", "JavaScript", 0, 0, 0, 57, 0, 0, 0, 0, 0, 1, 58
+"c:\Users\HP\Desktop\project\Project 2\services\auth\dist\routes\auth.js", "JavaScript", 0, 0, 0, 9, 0, 0, 0, 0, 0, 1, 10
+"c:\Users\HP\Desktop\project\Project 2\services\auth\dist\utils\ErrorHandler.js", "JavaScript", 0, 0, 0, 7, 0, 0, 0, 0, 0, 1, 8
+"c:\Users\HP\Desktop\project\Project 2\services\auth\dist\utils\TryCatch.js", "JavaScript", 0, 0, 0, 21, 0, 0, 0, 0, 0, 1, 22
+"c:\Users\HP\Desktop\project\Project 2\services\auth\dist\utils\buffer.js", "JavaScript", 0, 0, 0, 8, 0, 0, 0, 0, 0, 1, 9
+"c:\Users\HP\Desktop\project\Project 2\services\auth\dist\utils\db.js", "JavaScript", 0, 0, 0, 5, 0, 0, 0, 0, 0, 1, 6
+"c:\Users\HP\Desktop\project\Project 2\services\auth\dist\utils\forgotpassword.js", "JavaScript", 0, 0, 0, 159, 0, 0, 0, 0, 0, 1, 160
+"c:\Users\HP\Desktop\project\Project 2\services\auth\package-lock.json", "JSON", 0, 2444, 0, 0, 0, 0, 0, 0, 0, 1, 2445
+"c:\Users\HP\Desktop\project\Project 2\services\auth\package.json", "JSON", 0, 40, 0, 0, 0, 0, 0, 0, 0, 1, 41
+"c:\Users\HP\Desktop\project\Project 2\services\auth\src\app.ts", "TypeScript", 0, 0, 9, 0, 0, 0, 0, 0, 0, 3, 12
+"c:\Users\HP\Desktop\project\Project 2\services\auth\src\controllers\auth.ts", "TypeScript", 0, 0, 138, 0, 0, 0, 0, 0, 3, 19, 160
+"c:\Users\HP\Desktop\project\Project 2\services\auth\src\index.ts", "TypeScript", 0, 0, 62, 0, 0, 0, 0, 0, 0, 13, 75
+"c:\Users\HP\Desktop\project\Project 2\services\auth\src\middleware\multer.ts", "TypeScript", 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 4
+"c:\Users\HP\Desktop\project\Project 2\services\auth\src\producer.ts", "TypeScript", 0, 0, 57, 0, 0, 0, 0, 0, 0, 6, 63
+"c:\Users\HP\Desktop\project\Project 2\services\auth\src\routes\auth.ts", "TypeScript", 0, 0, 9, 0, 0, 0, 0, 0, 0, 2, 11
+"c:\Users\HP\Desktop\project\Project 2\services\auth\src\utils\ErrorHandler.ts", "TypeScript", 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 8
+"c:\Users\HP\Desktop\project\Project 2\services\auth\src\utils\TryCatch.ts", "TypeScript", 0, 0, 19, 0, 0, 0, 0, 0, 0, 1, 20
+"c:\Users\HP\Desktop\project\Project 2\services\auth\src\utils\buffer.ts", "TypeScript", 0, 0, 8, 0, 0, 0, 0, 0, 0, 2, 10
+"c:\Users\HP\Desktop\project\Project 2\services\auth\src\utils\db.ts", "TypeScript", 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 5
+"c:\Users\HP\Desktop\project\Project 2\services\auth\src\utils\forgotpassword.ts", "TypeScript", 0, 0, 159, 0, 0, 0, 0, 0, 0, 0, 159
+"c:\Users\HP\Desktop\project\Project 2\services\auth\tsconfig.json", "JSON with Comments", 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12
+"c:\Users\HP\Desktop\project\Project 2\services\job\dist\app.js", "JavaScript", 0, 0, 0, 11, 0, 0, 0, 0, 0, 1, 12
+"c:\Users\HP\Desktop\project\Project 2\services\job\dist\controllers\job.js", "JavaScript", 0, 0, 0, 274, 0, 0, 0, 0, 0, 1, 275
+"c:\Users\HP\Desktop\project\Project 2\services\job\dist\index.js", "JavaScript", 0, 0, 0, 75, 0, 0, 0, 0, 0, 1, 76
+"c:\Users\HP\Desktop\project\Project 2\services\job\dist\middleware\auth.js", "JavaScript", 0, 0, 0, 43, 0, 0, 0, 0, 0, 1, 44
+"c:\Users\HP\Desktop\project\Project 2\services\job\dist\middleware\multer.js", "JavaScript", 0, 0, 0, 4, 0, 0, 0, 0, 0, 1, 5
+"c:\Users\HP\Desktop\project\Project 2\services\job\dist\producer.js", "JavaScript", 0, 0, 0, 57, 0, 0, 0, 0, 0, 1, 58
+"c:\Users\HP\Desktop\project\Project 2\services\job\dist\routes\job.js", "JavaScript", 0, 0, 0, 16, 0, 0, 0, 0, 0, 1, 17
+"c:\Users\HP\Desktop\project\Project 2\services\job\dist\utils\ErrorHandler.js", "JavaScript", 0, 0, 0, 7, 0, 0, 0, 0, 0, 1, 8
+"c:\Users\HP\Desktop\project\Project 2\services\job\dist\utils\TryCatch.js", "JavaScript", 0, 0, 0, 21, 0, 0, 0, 0, 0, 1, 22
+"c:\Users\HP\Desktop\project\Project 2\services\job\dist\utils\buffer.js", "JavaScript", 0, 0, 0, 8, 0, 0, 0, 0, 0, 1, 9
+"c:\Users\HP\Desktop\project\Project 2\services\job\dist\utils\db.js", "JavaScript", 0, 0, 0, 5, 0, 0, 0, 0, 0, 1, 6
+"c:\Users\HP\Desktop\project\Project 2\services\job\dist\utils\forgotpassword.js", "JavaScript", 0, 0, 0, 159, 0, 0, 0, 0, 0, 1, 160
+"c:\Users\HP\Desktop\project\Project 2\services\job\dist\utils\producer.js", "JavaScript", 0, 0, 0, 57, 0, 0, 0, 0, 0, 1, 58
+"c:\Users\HP\Desktop\project\Project 2\services\job\dist\utils\templateStatusupdation.js", "JavaScript", 0, 0, 0, 117, 0, 0, 0, 0, 0, 1, 118
+"c:\Users\HP\Desktop\project\Project 2\services\job\package-lock.json", "JSON", 0, 2246, 0, 0, 0, 0, 0, 0, 0, 1, 2247
+"c:\Users\HP\Desktop\project\Project 2\services\job\package.json", "JSON", 0, 37, 0, 0, 0, 0, 0, 0, 0, 1, 38
+"c:\Users\HP\Desktop\project\Project 2\services\job\src\app.ts", "TypeScript", 0, 0, 11, 0, 0, 0, 0, 0, 0, 2, 13
+"c:\Users\HP\Desktop\project\Project 2\services\job\src\controllers\job.ts", "TypeScript", 0, 0, 283, 0, 0, 0, 0, 0, 0, 34, 317
+"c:\Users\HP\Desktop\project\Project 2\services\job\src\index.ts", "TypeScript", 0, 0, 75, 0, 0, 0, 0, 0, 0, 2, 77
+"c:\Users\HP\Desktop\project\Project 2\services\job\src\middleware\auth.ts", "TypeScript", 0, 0, 64, 0, 0, 0, 0, 0, 0, 6, 70
+"c:\Users\HP\Desktop\project\Project 2\services\job\src\middleware\multer.ts", "TypeScript", 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 4
+"c:\Users\HP\Desktop\project\Project 2\services\job\src\producer.ts", "TypeScript", 0, 0, 57, 0, 0, 0, 0, 0, 0, 6, 63
+"c:\Users\HP\Desktop\project\Project 2\services\job\src\routes\job.ts", "TypeScript", 0, 0, 16, 0, 0, 0, 0, 0, 0, 3, 19
+"c:\Users\HP\Desktop\project\Project 2\services\job\src\utils\ErrorHandler.ts", "TypeScript", 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 8
+"c:\Users\HP\Desktop\project\Project 2\services\job\src\utils\TryCatch.ts", "TypeScript", 0, 0, 19, 0, 0, 0, 0, 0, 0, 1, 20
+"c:\Users\HP\Desktop\project\Project 2\services\job\src\utils\buffer.ts", "TypeScript", 0, 0, 8, 0, 0, 0, 0, 0, 0, 2, 10
+"c:\Users\HP\Desktop\project\Project 2\services\job\src\utils\db.ts", "TypeScript", 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 5
+"c:\Users\HP\Desktop\project\Project 2\services\job\src\utils\forgotpassword.ts", "TypeScript", 0, 0, 159, 0, 0, 0, 0, 0, 0, 0, 159
+"c:\Users\HP\Desktop\project\Project 2\services\job\src\utils\templateStatusupdation.ts", "TypeScript", 0, 0, 117, 0, 0, 0, 0, 0, 0, 0, 117
+"c:\Users\HP\Desktop\project\Project 2\services\job\tsconfig.json", "JSON with Comments", 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12
+"c:\Users\HP\Desktop\project\Project 2\services\user\dist\controllers\user.js", "JavaScript", 0, 0, 0, 217, 0, 0, 0, 0, 1, 1, 219
+"c:\Users\HP\Desktop\project\Project 2\services\user\dist\index.js", "JavaScript", 0, 0, 0, 11, 0, 0, 0, 0, 0, 1, 12
+"c:\Users\HP\Desktop\project\Project 2\services\user\dist\middleware\auth.js", "JavaScript", 0, 0, 0, 43, 0, 0, 0, 0, 0, 1, 44
+"c:\Users\HP\Desktop\project\Project 2\services\user\dist\middleware\multer.js", "JavaScript", 0, 0, 0, 4, 0, 0, 0, 0, 0, 1, 5
+"c:\Users\HP\Desktop\project\Project 2\services\user\dist\routes\user.js", "JavaScript", 0, 0, 0, 15, 0, 0, 0, 0, 0, 1, 16
+"c:\Users\HP\Desktop\project\Project 2\services\user\dist\utils\ErrorHandler.js", "JavaScript", 0, 0, 0, 7, 0, 0, 0, 0, 0, 1, 8
+"c:\Users\HP\Desktop\project\Project 2\services\user\dist\utils\TryCatch.js", "JavaScript", 0, 0, 0, 21, 0, 0, 0, 0, 0, 1, 22
+"c:\Users\HP\Desktop\project\Project 2\services\user\dist\utils\buffer.js", "JavaScript", 0, 0, 0, 8, 0, 0, 0, 0, 0, 1, 9
+"c:\Users\HP\Desktop\project\Project 2\services\user\dist\utils\db.js", "JavaScript", 0, 0, 0, 5, 0, 0, 0, 0, 0, 1, 6
+"c:\Users\HP\Desktop\project\Project 2\services\user\dist\utils\forgotpassword.js", "JavaScript", 0, 0, 0, 159, 0, 0, 0, 0, 0, 1, 160
+"c:\Users\HP\Desktop\project\Project 2\services\user\package-lock.json", "JSON", 0, 2235, 0, 0, 0, 0, 0, 0, 0, 1, 2236
+"c:\Users\HP\Desktop\project\Project 2\services\user\package.json", "JSON", 0, 35, 0, 0, 0, 0, 0, 0, 0, 1, 36
+"c:\Users\HP\Desktop\project\Project 2\services\user\src\controllers\user.ts", "TypeScript", 0, 0, 221, 0, 0, 0, 0, 0, 1, 20, 242
+"c:\Users\HP\Desktop\project\Project 2\services\user\src\index.ts", "TypeScript", 0, 0, 11, 0, 0, 0, 0, 0, 0, 3, 14
+"c:\Users\HP\Desktop\project\Project 2\services\user\src\middleware\auth.ts", "TypeScript", 0, 0, 64, 0, 0, 0, 0, 0, 0, 7, 71
+"c:\Users\HP\Desktop\project\Project 2\services\user\src\middleware\multer.ts", "TypeScript", 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 4
+"c:\Users\HP\Desktop\project\Project 2\services\user\src\routes\user.ts", "TypeScript", 0, 0, 15, 0, 0, 0, 0, 0, 0, 3, 18
+"c:\Users\HP\Desktop\project\Project 2\services\user\src\utils\ErrorHandler.ts", "TypeScript", 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 8
+"c:\Users\HP\Desktop\project\Project 2\services\user\src\utils\TryCatch.ts", "TypeScript", 0, 0, 19, 0, 0, 0, 0, 0, 0, 1, 20
+"c:\Users\HP\Desktop\project\Project 2\services\user\src\utils\buffer.ts", "TypeScript", 0, 0, 8, 0, 0, 0, 0, 0, 0, 2, 10
+"c:\Users\HP\Desktop\project\Project 2\services\user\src\utils\db.ts", "TypeScript", 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 5
+"c:\Users\HP\Desktop\project\Project 2\services\user\src\utils\forgotpassword.ts", "TypeScript", 0, 0, 159, 0, 0, 0, 0, 0, 0, 0, 159
+"c:\Users\HP\Desktop\project\Project 2\services\user\tsconfig.json", "JSON with Comments", 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12
+"c:\Users\HP\Desktop\project\Project 2\services\utils\dist\consumer.js", "JavaScript", 0, 0, 0, 40, 0, 0, 0, 0, 0, 1, 41
+"c:\Users\HP\Desktop\project\Project 2\services\utils\dist\index.js", "JavaScript", 0, 0, 0, 19, 0, 0, 0, 0, 2, 1, 22
+"c:\Users\HP\Desktop\project\Project 2\services\utils\dist\routes.js", "JavaScript", 0, 0, 0, 196, 0, 0, 0, 0, 0, 1, 197
+"c:\Users\HP\Desktop\project\Project 2\services\utils\package-lock.json", "JSON", 0, 2518, 0, 0, 0, 0, 0, 0, 0, 1, 2519
+"c:\Users\HP\Desktop\project\Project 2\services\utils\package.json", "JSON", 0, 34, 0, 0, 0, 0, 0, 0, 0, 1, 35
+"c:\Users\HP\Desktop\project\Project 2\services\utils\src\consumer.ts", "TypeScript", 0, 0, 40, 0, 0, 0, 0, 0, 0, 9, 49
+"c:\Users\HP\Desktop\project\Project 2\services\utils\src\index.ts", "TypeScript", 0, 0, 19, 0, 0, 0, 0, 0, 2, 8, 29
+"c:\Users\HP\Desktop\project\Project 2\services\utils\src\routes.ts", "TypeScript", 0, 0, 193, 0, 0, 0, 0, 0, 0, 12, 205
+"c:\Users\HP\Desktop\project\Project 2\services\utils\tsconfig.json", "JSON with Comments", 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12
+"Total", "-", 82, 21257, 2102, 2093, 1238, 124, 23, 5, 40, 402, 27366

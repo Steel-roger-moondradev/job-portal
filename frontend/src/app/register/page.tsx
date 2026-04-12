@@ -42,14 +42,11 @@ const register = () => {
       
         try{
            const {data}=await axios.post<LoginResponse>(`${auth_service}/api/auth/register`,formData);
+           console.log("hello");
             if (!data || !data.token || !data.userObject) {
               throw new Error("Invalid response");
             }
-            Cookies.set("token",data.token,{
-              secure: true,
-              expires: 15, 
-              path: "/",
-            });
+            Cookies.set("token",data.token);
             toast.success(data.message);
             setIsAuth(true);
             setUser(data.userObject);
@@ -62,16 +59,16 @@ const register = () => {
         }
   }
   return (
-    <div className="min-h-screen bg-linear-to-br from-white via-purple-50 to-purple-100 dark:from-slate-950 dark:via-slate-900 dark:to-purple-950 flex items-center justify-center px-4">
+     <div className="min-h-screen bg-linear-to-br from-white via-purple-50 to-purple-100 flex items-center justify-center px-4">
       
       {/* Card */}
-      <div className="w-full max-w-3xl bg-white/80 dark:bg-slate-900/75 border border-white/60 dark:border-slate-700/70 backdrop-blur-lg shadow-xl rounded-3xl p-8 animate-fadeIn">
+      <div className="w-full max-w-3xl bg-white/70 backdrop-blur-lg shadow-xl rounded-3xl p-8 animate-fadeIn">
         
         {/* Heading */}
-        <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+        <h1 className="text-3xl font-bold text-gray-800 mb-2">
           Create Account
         </h1>
-        <p className="text-slate-600 dark:text-slate-300 mb-6">
+        <p className="text-gray-500 mb-6">
           Join and start your journey 🚀
         </p>
 
@@ -83,9 +80,9 @@ const register = () => {
          <></>
          :<>
          <div className="col-span-2 relative">
-            <Briefcase className="absolute left-3 top-3 text-slate-400 dark:text-slate-500" size={18} />
+            <Briefcase className="absolute left-3 top-3 text-gray-400" size={18} />
             <select
-              className="w-full pl-10 pr-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/90 dark:bg-slate-950/60 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-purple-500 dark:focus:border-purple-400 outline-none transition"
+              className="w-full pl-10 pr-3 py-2 rounded-xl border focus:ring-2 focus:ring-purple-400 outline-none transition"
               onChange={(e) => {setRole(e.target.value)}}
             >
               <option value="">Select Role</option>
@@ -97,9 +94,9 @@ const register = () => {
           {role&&
             <>
             <div className="col-span-2 relative">
-            <Briefcase className="absolute left-3 top-3 text-slate-400 dark:text-slate-500" size={18} />
+            <Briefcase className="absolute left-3 top-3 text-gray-400" size={18} />
             <select
-              className="w-full pl-10 pr-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/90 dark:bg-slate-950/60 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-purple-500 dark:focus:border-purple-400 outline-none transition"
+              className="w-full pl-10 pr-3 py-2 rounded-xl border focus:ring-2 focus:ring-purple-400 outline-none transition"
               onChange={(e) => {setRole(e.target.value)}}
               value={role}
             >
@@ -111,44 +108,44 @@ const register = () => {
 
             {/* Name */}
           <div className="relative">
-            <User className="absolute left-3 top-3 text-slate-400 dark:text-slate-500" size={18} />
+            <User className="absolute left-3 top-3 text-gray-400" size={18} />
             <input
               type="text"
               placeholder="Full Name"
-              className="w-full pl-10 pr-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/90 dark:bg-slate-950/60 text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-purple-500 dark:focus:border-purple-400 outline-none transition"
+              className="w-full pl-10 pr-3 py-2 rounded-xl border focus:ring-2 focus:ring-purple-400 outline-none transition"
               onChange={(e) => {setName(e.target.value)}}
             />
           </div>
 
           {/* Email */}
           <div className="relative">
-            <Mail className="absolute left-3 top-3 text-slate-400 dark:text-slate-500" size={18} />
+            <Mail className="absolute left-3 top-3 text-gray-400" size={18} />
             <input
               type="email"
               placeholder="Email"
-              className="w-full pl-10 pr-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/90 dark:bg-slate-950/60 text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-purple-500 dark:focus:border-purple-400 outline-none transition"
+              className="w-full pl-10 pr-3 py-2 rounded-xl border focus:ring-2 focus:ring-purple-400 outline-none transition"
               onChange={(e) => {setEmail(e.target.value)}}
             />
           </div>
 
           {/* Password */}
           <div className="relative">
-            <Lock className="absolute left-3 top-3 text-slate-400 dark:text-slate-500" size={18} />
+            <Lock className="absolute left-3 top-3 text-gray-400" size={18} />
             <input
               type="password"
               placeholder="Password"
-              className="w-full pl-10 pr-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/90 dark:bg-slate-950/60 text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-purple-500 dark:focus:border-purple-400 outline-none transition"
+              className="w-full pl-10 pr-3 py-2 rounded-xl border focus:ring-2 focus:ring-purple-400 outline-none transition"
               onChange={(e) => {setPassword(e.target.value)}}
             />
           </div>
 
           {/* Phone */}
           <div className="relative">
-            <Phone className="absolute left-3 top-3 text-slate-400 dark:text-slate-500" size={18} />
+            <Phone className="absolute left-3 top-3 text-gray-400" size={18} />
             <input
               type="text"
               placeholder="Phone Number"
-              className="w-full pl-10 pr-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/90 dark:bg-slate-950/60 text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-purple-500 dark:focus:border-purple-400 outline-none transition"
+              className="w-full pl-10 pr-3 py-2 rounded-xl border focus:ring-2 focus:ring-purple-400 outline-none transition"
               onChange={(e) => {setPhoneNumber(e.target.value)}}
             />
           </div>
@@ -156,10 +153,10 @@ const register = () => {
               <>
               {/* Resume */}
                 <div className="col-span-2 relative">
-                  <FileText className="absolute left-3 top-3 text-slate-400 dark:text-slate-500" size={18} />
+                  <FileText className="absolute left-3 top-3 text-gray-400" size={18} />
                   <input
                     type="file"
-                    className="w-full pl-10 pr-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/90 dark:bg-slate-950/60 text-slate-900 dark:text-slate-100 file:text-slate-700 dark:file:text-slate-200 focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-purple-500 dark:focus:border-purple-400 outline-none transition"
+                    className="w-full pl-10 pr-3 py-2 rounded-xl border bg-white focus:ring-2 focus:ring-purple-400 outline-none transition"
                     accept="application/pdf"
                     onChange={(e)=>{
                       if(e.target.files&&e.target.files[0]){
@@ -170,12 +167,12 @@ const register = () => {
                 </div>
                  {/* Bio */}
                   <div className="col-span-2 relative">
-                    <AlignLeft className="absolute left-3 top-3 text-slate-400 dark:text-slate-500" size={18} />
+                    <AlignLeft className="absolute left-3 top-3 text-gray-400" size={18} />
                     <textarea
                       placeholder="Short Bio"
-                      rows={3}
-                      className="w-full pl-10 pr-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/90 dark:bg-slate-950/60 text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-purple-500 dark:focus:border-purple-400 outline-none transition"
-                      onChange={(e) => setBio(e.target.value)}
+                      rows="3"
+                      className="w-full pl-10 pr-3 py-2 rounded-xl border focus:ring-2 focus:ring-purple-400 outline-none transition"
+                      onChange={(e) => {setBio(e.target.value)}}
                     ></textarea>
                   </div>
                </>}
@@ -187,7 +184,7 @@ const register = () => {
           <Button
               type="submit"
               disabled={btnLoading}
-              className="w-full bg-purple-600 dark:bg-purple-500 hover:bg-purple-700 dark:hover:bg-purple-400 text-white shadow-md shadow-purple-500/20 dark:shadow-purple-900/40 transition-all duration-300"
+              className="w-full bg-purple-600 hover:bg-purple-700 transition-all duration-300"
             >
               {btnLoading ? "Registering user..." : "Register"}
             </Button>

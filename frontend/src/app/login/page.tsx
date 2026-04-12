@@ -1,7 +1,7 @@
 "use client";
 
 import { useappdata } from "@/context/AppContext";
-import { useEffect, useState} from "react";
+import { useState} from "react";
 import {auth_service} from "../../context/AppContext"
 import { useRouter } from 'next/navigation';
 import toast from "react-hot-toast";
@@ -24,37 +24,31 @@ const login = () => {
                 isAuth,
                 setUser,
                 setIsAuth}=useappdata();
-
-  useEffect(() => {
-    if (loading) return;
-    if (isAuth) {
-      router.replace('/');
-    }
-  }, [loading, isAuth, router]);
-
   const submitHandler=async (e:React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
     setBtnloading(true);
    if(isAuth){
         router.push('/');
       return;}
+
     try{
+      
       const {data}= await axios.post<LoginResponse>(`${auth_service}/api/auth/login`,{email,password});
       if (!data || !data.token || !data.userObject) {
   throw new Error("Invalid response");
 }
       toast.success(data.message);
-     Cookies.set("token", data.token, {
-          secure: true,
-          expires: 15, 
-          path: "/",
-        });
+      Cookies.set("token",data.token,{
+        secure:true,
+        expires:15,
+        path:"/",
+      });
       setUser(data.userObject);
       setIsAuth(true);  
       router.push('/');
     }
     catch(error:any){
-      toast.error(error.response?.data?.message||"Login Failed");
+      toast.error(error.response?.data?.message);
       setIsAuth(false);
     } finally{
       setBtnloading(false);
@@ -62,17 +56,17 @@ const login = () => {
   }
   
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-b from-background via-background to-muted/40 text-foreground px-4">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-purple-100 to-white px-4">
       
       {/* Animated Card */}
-      <Card className="w-full max-w-md shadow-xl rounded-2xl transition-all duration-500 hover:scale-[1.02] bg-background/80 border border-border/60 backdrop-blur-md">
+      <Card className="w-full max-w-md shadow-xl rounded-2xl transition-all duration-500 hover:scale-[1.02]">
         <CardContent className="p-6 space-y-6">
 
           {/* Heading */}
           <div className="text-center space-y-2">
-            <h1 className="text-3xl font-bold text-foreground">Welcome Back</h1>
-            <p className="text-muted-foreground text-sm">
-              Login to continue to Work Sphere
+            <h1 className="text-3xl font-bold">Welcome Back</h1>
+            <p className="text-gray-500 text-sm">
+              Login to continue to Job Portal
             </p>
           </div>
 
@@ -81,26 +75,26 @@ const login = () => {
 
             {/* Email */}
             <div className="relative">
-              <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
               <Input
                 type="email"
                 placeholder="Enter email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="pl-10 bg-background/70 border-border text-foreground"
+                className="pl-10"
                 required
               />
             </div>
 
             {/* Password */}
             <div className="relative">
-              <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
               <Input
                 type="password"
                 placeholder="Enter password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="pl-10 bg-background/70 border-border text-foreground"
+                className="pl-10"
                 required
               />
             </div>
@@ -109,7 +103,7 @@ const login = () => {
             <div className="text-right text-sm">
               <Link
                 href="/forgot"
-                className="text-indigo-600 dark:text-indigo-400 hover:underline"
+                className="text-purple-600 hover:underline"
               >
                 Forgot Password?
               </Link>
@@ -119,18 +113,18 @@ const login = () => {
             <Button
               type="submit"
               disabled={btnLoading}
-              className="w-full bg-linear-to-r from-indigo-500 to-purple-500 hover:shadow-indigo-500/30 transition-all duration-300 text-white"
+              className="w-full bg-purple-600 hover:bg-purple-700 transition-all duration-300"
             >
               {btnLoading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
 
           {/* Register Link */}
-          <p className="text-center text-sm text-muted-foreground">
-            Don't have an account?{" "}
+          <p className="text-center text-sm text-gray-600">
+            Don’t have an account?{" "}
             <Link
               href="/register"
-              className="text-indigo-600 dark:text-indigo-400 font-medium hover:underline"
+              className="text-purple-600 font-medium hover:underline"
             >
               Register
             </Link>
