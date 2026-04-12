@@ -172,3 +172,10 @@ export const forgetPassword=TryCatch(async(req,res,next)=>{
          res.json({message:"Your password is updated successfully"});
 
  })
+export const usercount = TryCatch(async (req, res) => {
+    const result = await sql`SELECT COUNT(*)::int AS count FROM users`;
+    if(!result){
+        throw new ErrorHandler("Failed to retrieve user count", 500);
+    }
+    res.json(result[0].count);
+});

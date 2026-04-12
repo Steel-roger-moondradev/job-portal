@@ -14,24 +14,29 @@ type UploadResponse = {
     url: string;
     public_id: string;
 };
-export const getProfile=TryCatch(async(req,res,next)=>{
+export const getProfile=TryCatch(async(req:authenticatedRequest,res,next)=>{
     const {userId}=req.params;
     const users=await sql`
         SELECT u.user_id,u.name,u.email,u.phone_number,u.role,u.bio,u.resume,
-        u.profile_pic,u.subscription,ARRAY_AGG(s.name) FILTER(WHERE s.name IS NOT NULL) as skills FROM users u 
+        u.profile_pic,ARRAY_AGG(s.name) FILTER(WHERE s.name IS NOT NULL) as skills FROM users u 
         LEFT JOIN users_skills us ON us.user_id=u.user_id LEFT JOIN skills s ON s.skill_id=us.skill_id
         WHERE u.user_id=${userId}
         GROUP BY u.user_id
         `;
 
         if(users.length===0){
-            res.status(400).json({
+            res.status(404).json({
                 message:"User does not exist",
             })
             return;
         }
+        const isOwnProfile=req.user?.user_id===Number(userId);
         const user=users[0];
-        user.skill=user.skills||[]
+        user.skills=user.skills||[]
+        if(!isOwnProfile){
+            delete user.email;
+            delete user.phone_number;
+        }
         const userObject=user;
         res.json({
             userObject
@@ -179,13 +184,13 @@ export const deleteSkill=TryCatch(async(req:authenticatedRequest,res,next)=>{
          throw new ErrorHandler("No skill provided to Delete",400);
     }
     const result=await sql`DELETE FROM users_skills WHERE user_id=${userId} AND
-    skill_id=(SELECT skill_id FROM skills WHERE name=(${skillName.trim()}))
+    skill_id=(SELECT skill_id FROM skills WHERE name=(${skillName.trim().toLowerCase()}))
     RETURNING user_id`;
     if(result.length===0){
-        throw new ErrorHandler(`${skillName.trim()} as Skill not found`,400);
+        throw new ErrorHandler(`${skillName.trim().toLowerCase()} as Skill not found`,400);
     }
     res.json({
-        message:`${skillName.trim()} is deleted Successfully`,
+        message:`${skillName.trim().toLowerCase()} is deleted Successfully`,
     })
 
 })
@@ -195,7 +200,7 @@ export const applyForJob=TryCatch(async(req:authenticatedRequest,res)=>{
         throw new ErrorHandler("Authentication is required",401);
     }
     if(user.role!='jobseeker'){
-        throw new ErrorHandler("Forbidden request",401);
+        throw new ErrorHandler("Forbidden request",403);
     }
     const{job_id}=req.body||{};
     const resume=user.resume;
@@ -240,8 +245,8 @@ export const getAllApllications=TryCatch(async(req:authenticatedRequest,res)=>{
     const appliedJobs=await sql`
     SELECT a.*, j.title as job_title, j.salary as job_salary,j.location as job_location FROM applications a JOIN jobs j ON j.job_id=a.job_id WHERE a.applicant_id=${req.user?.user_id}
     `;
-    res.json({
+    res.json(
         appliedJobs
-    });
+    );
 
 })

@@ -3,6 +3,7 @@ import { isAuth } from '../middleware/auth.js';
 import { addSkill, applyForJob, deleteSkill, getAllApllications, getProfile, myProfile, updatePic, updateProfile, updateResume } from '../controllers/user.js';
 import uploadFile from '../middleware/multer.js';
 const router = express.Router();
+router.get("/allapplications", isAuth, getAllApllications);
 router.get("/alljobs", isAuth, getAllApllications);
 router.get("/me", isAuth, myProfile);
 router.put("/update/profile", isAuth, updateProfile);

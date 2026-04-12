@@ -31,7 +31,7 @@ export const isAuth = async (req, res, next) => {
             return;
         }
         const user = users[0];
-        user.skill = user.skills || [];
+        user.skills = user.skills || [];
         req.user = user;
         next();
     }

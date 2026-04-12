@@ -60,6 +60,16 @@ async function initDB() {
         UNIQUE(job_id,application_id)
         )
         `;
+        // Enables fast ILIKE matching on job title/location for search filters.
+        await sql `CREATE EXTENSION IF NOT EXISTS pg_trgm`;
+        await sql `CREATE INDEX IF NOT EXISTS idx_companies_recruiter_id ON companies(recruiter_id)`;
+        await sql `CREATE INDEX IF NOT EXISTS idx_companies_name_recruiter_id ON companies(name, recruiter_id)`;
+        await sql `CREATE INDEX IF NOT EXISTS idx_jobs_active_created_at ON jobs(is_active, created_at DESC)`;
+        await sql `CREATE INDEX IF NOT EXISTS idx_jobs_company_id ON jobs(company_id)`;
+        await sql `CREATE INDEX IF NOT EXISTS idx_jobs_title_trgm ON jobs USING GIN (title gin_trgm_ops)`;
+        await sql `CREATE INDEX IF NOT EXISTS idx_jobs_location_trgm ON jobs USING GIN (location gin_trgm_ops)`;
+        await sql `CREATE INDEX IF NOT EXISTS idx_applications_job_subscribed_applied ON applications(job_id, subscribed DESC, applied_at ASC)`;
+        await sql `CREATE INDEX IF NOT EXISTS idx_applications_applicant_id ON applications(applicant_id)`;
         console.log("✅ Database is created/checked");
     }
     catch (error) {

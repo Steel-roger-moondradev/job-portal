@@ -47,13 +47,15 @@ export const createCompany=TryCatch(async(req:authenticatedRequest,res,next)=>{
           throw new ErrorHandler("Error in uploading",400);
     }
 
-    const [insertCompany]=await sql`
+    const [company]=await sql`
     INSERT INTO companies(name,description,website,logo,logo_public_id,recruiter_id)
     VALUES (${name},${description},${website},${data.url},${data.public_id},${user.user_id})
     RETURNING *
     `;
 
-    const company=insertCompany[0];
+    if(!company){
+        throw new ErrorHandler("Error in creating company",400);
+    }
     res.json({
         message:"Company listed successfully",
         company
@@ -65,12 +67,15 @@ export const companyDelete=TryCatch(async(req:authenticatedRequest,res,next)=>{
     if(!user){
         throw new ErrorHandler("Authentication is required",401);
     }
-     const [role]=await sql`
+     const [userRole]=await sql`
     SELECT role FROM users WHERE user_id=${user.user_id}
     `;
-    const userRole=role[0];
 
-    if(userRole=='jobseeker'){
+    if(!userRole){
+        throw new ErrorHandler("User role not found",400);
+    }
+
+    if(userRole.role=="jobseeker"){
         throw new ErrorHandler("only recruiter is allowed",401);
     }
     const {company}=req.params;
@@ -141,7 +146,7 @@ export const updateJob=TryCatch(async(req:authenticatedRequest,res,next)=>{
     if(userRole.role=='jobseeker'){
         throw new ErrorHandler("only recruiter is allowed",401);
     }
-    const {title,description,salary,location,openings,job_type,work_location,role,company_id}=req.body;
+    const {title,description,salary,location,openings,job_type,work_location,role,company_id,is_active}=req.body;
 
     if(!title||!description||!salary||!location||!openings||!job_type||!work_location||!role){
         throw new ErrorHandler("Data is insufficient",401);
@@ -149,7 +154,7 @@ export const updateJob=TryCatch(async(req:authenticatedRequest,res,next)=>{
 
     const [updatedJob]=await sql `
     UPDATE  jobs
-    SET title=${title},description=${description},salary=${salary},location=${location},openings=${openings},job_type=${job_type},work_location=${work_location},role=${role},posted_by_recruiter_id=${user.user_id}
+    SET title=${title},description=${description},salary=${salary},location=${location},openings=${openings},job_type=${job_type},work_location=${work_location},role=${role},posted_by_recruiter_id=${user.user_id},is_active=${is_active}
     WHERE job_id=${req.params.job_id}
     RETURNING *
     `;
@@ -169,6 +174,9 @@ export const getAllCompanies=TryCatch(async(req:authenticatedRequest,res,next)=>
     const company=await sql `
     SELECT * FROM companies WHERE recruiter_id=${user?.user_id}
     `;
+    if(!company){
+        throw new ErrorHandler("No company found for this recruiter",400);
+    }
     res.json(company)
 })
 
@@ -182,7 +190,7 @@ export const getAllCompanyDetails=TryCatch(async(req,res,next)=>{
     GROUP BY c.company_id
     `;
     if(!companyDetails){
-        throw new ErrorHandler("No company of this id ",400);
+        throw new ErrorHandler("This company does not exist",400);
     }
     res.json(companyDetails)
 })
@@ -210,9 +218,10 @@ export const getSingleJob=TryCatch(async(req,res)=>{
     const [job]=await sql`
     SELECT * FROM jobs j WHERE j.job_id=${req.params?.jobId};
     `;
-    res.json({
-        job
-    })
+    if(!job){
+        throw new ErrorHandler("This job does not exist",400);
+    }
+    res.json(job);
 })
 
 export const getAllApplicationsForJob=TryCatch(async(req:authenticatedRequest,res)=>{
@@ -292,4 +301,22 @@ export const selectapplicants =TryCatch(async(req:authenticatedRequest,res)=>{
     })
 })
 
+export const jobcount=TryCatch(async(req,res)=>{
+    const count=await sql`
+    SELECT COUNT(*) FROM jobs WHERE is_active=true
+    `;
+    if(!count){
+        throw new ErrorHandler("Failed to retrieve job count", 500);
+    }
+    res.json((count[0].count));
+});
+export const companycount=TryCatch(async(req,res)=>{
+    const count=await sql`
+    SELECT COUNT(*) FROM companies 
+    `;
+    if(!count){
+        throw new ErrorHandler("Failed to retrieve company count", 500);
+    }
+    res.json((count[0].count));
+});
 

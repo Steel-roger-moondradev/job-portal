@@ -55,6 +55,8 @@ async function initdb(){
     PRIMARY KEY(user_id,skill_id)
     )
     `;
+
+
      console.log("✅ Database created/checked");
     }
     catch(error){

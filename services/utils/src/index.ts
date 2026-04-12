@@ -3,11 +3,11 @@ import dotenv from 'dotenv';
 import { v2 as cloudinary } from 'cloudinary'
 import cors from 'cors'
 import utilsroute from './routes.js'
-// import { sendMailConsumer } from './consumer.js';
+ import { sendMailConsumer } from './consumer.js';
 
 dotenv.config();
 
-// sendMailConsumer();
+ sendMailConsumer();
 
 const app=express();
 

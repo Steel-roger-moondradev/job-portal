@@ -142,7 +142,7 @@ email or contact support if you have concerns.
 <tr>
 <td class="footer">
 <p class="footer-text">
-© 2025 Job Portal. All rights reserved.
+© 2025 Work Sphere. All rights reserved.
 </p>
 <p class="footer-text">
 This is an automated message, please do not reply.

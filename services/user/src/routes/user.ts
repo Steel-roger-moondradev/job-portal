@@ -4,6 +4,7 @@ import { addSkill, applyForJob, deleteSkill, getAllApllications, getProfile, myP
 import uploadFile from '../middleware/multer.js';
 
 const router=express.Router();
+router.get("/allapplications",isAuth,getAllApllications);
 router.get("/alljobs",isAuth,getAllApllications);
 router.get("/me",isAuth,myProfile);
 router.put("/update/profile",isAuth,updateProfile);
@@ -13,6 +14,7 @@ router.post("/add/skills",isAuth,addSkill);
 router.put("/delete/skills",isAuth,deleteSkill);
 router.post("/apply",isAuth,applyForJob);
 router.get("/:userId",isAuth,getProfile);
+
 
 
 export default router;
