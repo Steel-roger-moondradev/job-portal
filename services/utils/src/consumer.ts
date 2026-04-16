@@ -32,7 +32,7 @@ await consumer.run({
 
         
   const info = await transporter.sendMail({
-    from: `"JOB-PORTAL" <${process.env.MAIL_ID}>`,
+    from: `"Work-Sphere" <${process.env.MAIL_ID}>`,
     to,
     subject,
     html,
